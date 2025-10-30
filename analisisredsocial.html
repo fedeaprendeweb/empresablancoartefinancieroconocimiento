@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador Avanzado de Perfiles Sociales</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --danger: #f72585;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+                border-radius: 10px;
+  max-width: 900px;
+  margin: 90px auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3 {
+            color: var(--dark-color);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--light-color);
+            padding-bottom: 10px;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+            background-color: var(--light-color);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 15px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border 0.3s;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            min-width: 150px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .stat-card p {
+            margin: 5px 0 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            font-size: 14px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--dark-color);
+            color: white;
+            position: sticky;
+            top: 0;
+            font-size: 12px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #e9f7fe;
+        }
+
+        .platform-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .platform-facebook {
+            color: #3b5998;
+        }
+
+        .platform-instagram {
+            color: #e1306c;
+        }
+
+        .platform-twitter {
+            color: #1da1f2;
+        }
+
+        .platform-linkedin {
+            color: #0077b5;
+        }
+
+        .platform-youtube {
+            color: #ff0000;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+
+        .export-section {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        select, input[type="text"] {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .tag-high-risk {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .tag-medium-risk {
+            background-color: #fff8e1;
+            color: #f57f17;
+        }
+
+        .tag-low-risk {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        /* Nuevos estilos añadidos y optimizados */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .main-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--dark);
+        }
+
+        .analyzer-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Nuevos estilos para la sección de ubicación mejorada */
+        .location-details {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .location-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .location-accuracy {
+            font-size: 14px;
+            color: var(--gray);
+            margin-left: auto;
+        }
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .location-item {
+            padding: 10px;
+            border-radius: 6px;
+            background-color: var(--light);
+        }
+
+        .location-item strong {
+            display: block;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .location-item span {
+            font-size: 15px;
+            word-break: break-all;
+        }
+
+        .location-map-container {
+            height: 350px;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            background-color: var(--light-gray);
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: var(--gray);
+        }
+
+        .location-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .location-btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            background-color: var(--light-gray);
+            transition: all 0.3s;
+        }
+
+        .location-btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .location-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Estilos para el historial de seguimiento (simplificados para el ejemplo) */
+        .tracking-history {
+            margin-top: 20px;
+            /* display: none; */ /* Se cambia a block para que sea visible al iniciar */
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .history-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-time {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .header-content, .footer-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .stats {
+                flex-direction: column;
+            }
+            .location-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+
+  .btn-volver {
+    display: inline-block;
+    padding: 10px 25px;
+    background-color: transparent;
+    color: #007BFF;
+    border: 2px solid #007BFF;
+    border-radius: 6px;
+    font-size: 16px;
+    text-decoration: none;
+    font-family: sans-serif;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .btn-volver:hover {
+    background-color: #007BFF;
+    color: white;
+    border-color: #0056b3;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  }
+/* Solo estilos para el botón "Volver atrás" */
+.back-button {
+  display: inline-block;
+  padding: 10px 18px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid #333;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  user-select: none;
+}
+
+/* Efecto al pasar el ratón */
+.back-button:hover,
+.back-button:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+  text-decoration: none;
+  outline: none;
+}
+
+/* Efecto al hacer clic */
+.back-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+    </style>
+</head>
+<body>
+    <header>
+        
+
+        <div class="header-content">
+            <a href="#" class="logo">
+                <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+              ANALIZA ENCONTRA CULPABLE DE LA CUENTA FALSA DE INSTRAGAM, TWITER Y FACEBOOK
+            </a>
+             
+       <a href="conocimientosaprende.html" class="back-button" aria-label="Volver atrás">Volver atrás</a>
+  
+            <nav>
+            
+                
+                
+            
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>🕵️‍♂️ Analizador Avanzado de Perfiles Sociales</h1>
+
+        <div class="input-section">
+            <h2>🔗 Ingresar Enlaces a Analizar e investigar</h2>
+            <p>Pega los enlaces de perfiles sociales (uno por línea):</p>
+            <textarea id="inputLinks" placeholder="Ejemplos:
+https://facebook.com/usuario123
+https://instagram.com/ana.lnaaa
+https://twitter.com/juanper.ezaa
+https://linkedin.com/in/mariaaa-gara.cia"></textarea>
+
+            <div class="controls">
+                <div>
+                    <button id="btnAnalizar" class="btn-primary">🔍 Analizar Perfiles</button>
+                    <button id="btnLimpiar" class="btn-danger">🗑️ Limpiar</button>
+                </div>
+                <div>
+                    <button id="btnEjemplo" class="btn-secondary">📋 Insertar Ejemplo</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" id="loadingIndicator">
+            <div class="spinner"></div>
+            <p>Analizando perfiles...</p>
+        </div>
+
+        <div class="stats" id="statsSection">
+            <div class="stat-card">
+                <h3>Total Perfiles</h3>
+                <p id="totalProfiles">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Facebook</h3>
+                <p id="facebookCount">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Instagram</h3>
+                <p id="instagramCount">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Twitter</h3>
+                <p id="twitterCount">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Otros</h3>
+                <p id="otherCount">0</p>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div>
+                <label for="filterPlatform">Filtrar por plataforma:</label>
+                <select id="filterPlatform">
+                    <option value="all">Todas</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Twitter">Twitter</option>
+                    <option value="LinkedIn">LinkedIn</option>
+                    <option value="YouTube">YouTube</option>
+                    <option value="Otros">Otros</option>
+                    </select>
+            </div>
+            <div>
+                <label for="filterCountry">Filtrar por país:</label>
+                <select id="filterCountry">
+                    <option value="all">Todos</option>
+                    </select>
+            </div>
+            <div>
+                <label for="searchUser">Buscar usuario:</label>
+                <input type="text" id="searchUser" placeholder="Nombre de usuario">
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table id="resultado">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Plataforma</th>
+                        <th>Usuario</th>
+                        <th>País Detectado</th>
+                        <th>Provincia / Región</th>
+                        <th>Ciudad</th>
+                        <th>Dirección IP</th>
+                        <th>Riesgo</th>
+                        <th>Última Actividad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+        <div class="tracking-panel" style="margin-top: 30px;">
+            <div class="tracking-header">
+                <h3 style="margin: 0; color: var(--primary);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="var(--primary)" stroke-width="2"/>
+                        <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="var(--primary)" stroke-width="2"/>
+                    </svg>
+                    Control de Seguimiento Avanzado
+                </h3>
+            </div>
+            <p style="color: var(--gray);">Esta funcionalidad  un seguimiento de ubicación en tiempo real.</p>
+            <div class="tracking-controls" style="margin-top: 15px;">
+                <button class="location-btn primary" id="start-tracking-simulated">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 5px; vertical-align: middle;">
+                        <path d="M15 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Iniciar Seguimiento 
+                </button>
+                <button class="location-btn" id="stop-tracking-simulated" style="display: none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 5px; vertical-align: middle;">
+                        <path d="M6 18L18 6" stroke="var(--dark)" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M6 6L18 18" stroke="var(--dark)" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Detener Seguimiento
+                </button>
+            </div>
+            <div class="tracking-history" id="tracking-history" style="display: none;">
+                <h4 style="margin-bottom: 10px; color: var(--dark);">Historial de Ubicaciones </h4>
+                <div id="history-items" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--light-gray); border-radius: 4px;">
+                    </div>
+            </div>
+        </div>
+        
+        <div class="location-details" id="location-details" style="display: none;">
+            <div class="location-header">
+                <h3 style="margin: 0; color: var(--primary);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
+                        <path d="M12 12C13.6569 12 15 10.6569 15 9C15 7.34315 13.6569 6 12 6C10.3431 6 9 7.34315 9 9C9 10.6569 10.3431 12 12 12Z" stroke="var(--primary)" stroke-width="2"/>
+                        <path d="M12 22C16 18 20 14.4183 20 9C20 4.58172 16.4183 1 12 1C7.58172 1 4 4.58172 4 9C4 14.4183 8 18 12 22Z" stroke="var(--primary)" stroke-width="2"/>
+                    </svg>
+                    Ubicación Exacta Detectada (Perfil: <span id="current-profile-user"></span>)
+                </h3>
+                <span class="location-accuracy" id="location-accuracy">Precisión:</span>
+            </div>
+
+            <div class="location-grid">
+                <div class="location-item">
+                    <strong>Dirección IP</strong>
+                    <span id="location-ip-address">192.168.1.1</span>
+                </div>
+                <div class="location-item">
+                    <strong>País</strong>
+                    <span id="location-country">Argentina</span>
+                </div>
+                <div class="location-item">
+                    <strong>Región / Provincia</strong>
+                    <span id="location-region">Buenos Aires</span>
+                </div>
+                <div class="location-item">
+                    <strong>Ciudad</strong>
+                    <span id="location-city">La Plata</span>
+                </div>
+                <div class="location-item">
+                    <strong>Barrio / Comuna</strong>
+                    <span id="location-neighborhood">Centro</span>
+                </div>
+                <div class="location-item">
+                    <strong>Calle y Número</strong>
+                    <span id="location-street">Av. 53 y Cll. 10</span>
+                </div>
+                <div class="location-item">
+                    <strong>Dirección Completa</strong>
+                    <span id="location-address">Av. 53 y Cll. 10, Centro, La Plata, Buenos Aires, Argentina</span>
+                </div>
+                <div class="location-item">
+                    <strong>Código Postal</strong>
+                    <span id="location-postal">1900</span>
+                </div>
+                <div class="location-item">
+                    <strong>Proveedor ISP</strong>
+                    <span id="location-isp">Fibertel S.A.</span>
+                </div>
+                <div class="location-item">
+                    <strong>Latitud / Longitud</strong>
+                    <span id="location-coords">-34.921, -57.954</span>
+                </div>
+            </div>
+
+            <div class="location-map-container" id="location-map-container">
+                <div class="map-placeholder">
+                    <p>📍 Mapa de la ubicación</p>
+                </div>
+            </div>
+
+            <div class="location-actions">
+                <button class="location-btn primary" id="refresh-location-details">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 5px; vertical-align: middle;">
+                        <path d="M1 4V10H7" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M23 20V14H17" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M23 10C21.6 6 18.1 3 14 3C8.5 3 4 7.5 4 13C4 18.5 8.5 23 14 23C17.8 23 21 20.9 22.3 17.8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Actualizar Ubicación Detallada
+                </button>
+            </div>
+        </div>
+
+        <div class="export-section">
+            <button onclick="exportToPDF()" class="btn-primary">📄 Exportar a PDF</button>
+        </div>
+    </div>
+
+ 
+    <script>
+        // Utilizar 'window.jsPDF' y 'window.html2canvas' después de cargar los scripts
+        const { jsPDF } = window.jspdf;
+        
+        let ANALYZED_DATA = [];
+        let trackingInterval;
+        let CURRENT_TRACKING_PROFILE_INDEX = -1;
+
+        // Listas de datos simulados
+        const PLATFORMS = ["Facebook", "Instagram", "Twitter", "LinkedIn", "YouTube", "Otros"];
+        const RISK_LEVELS = ["low-risk", "medium-risk", "high-risk"];
+        const COUNTRIES = ["Argentina", "México", "Colombia", "España", "EE. UU.", "Chile", "Perú"];
+        const REGIONS = {
+            "Argentina": ["Buenos Aires", "Córdoba", "Santa Fe", "Mendoza"],
+            "México": ["Ciudad de México", "Jalisco", "Nuevo León", "Baja California"],
+            "Colombia": ["Antioquia", "Cundinamarca", "Valle del Cauca", "Atlántico"],
+            "España": ["Madrid", "Cataluña", "Andalucía", "Comunidad Valenciana"],
+            "EE. UU.": ["California", "Texas", "Florida", "Nueva York"],
+            "Chile": ["Metropolitana", "Valparaíso", "Biobío", "Coquimbo"],
+            "Perú": ["Lima", "Arequipa", "Cusco", "La Libertad"]
+        };
+        const CITIES = {
+            "Buenos Aires": ["La Plata", "Mar del Plata", "Bahía Blanca"],
+            "Ciudad de México": ["Ecatepec", "Nezahualcóyotl"],
+            "Madrid": ["Alcalá de Henares", "Móstoles"],
+            "California": ["Los Angeles", "San Francisco"],
+            "Lima": ["Miraflores", "San Isidro"],
+            // Ciudades genéricas para que no fallen las regiones sin lista específica
+            "Córdoba": ["Córdoba Capital"],
+            "Santa Fe": ["Rosario"],
+            "Mendoza": ["Mendoza Ciudad"],
+            "Jalisco": ["Guadalajara"],
+            "Nuevo León": ["Monterrey"],
+            "Baja California": ["Tijuana"],
+            "Antioquia": ["Medellín"],
+            "Cundinamarca": ["Soacha"],
+            "Valle del Cauca": ["Cali"],
+            "Atlántico": ["Barranquilla"],
+            "Cataluña": ["Barcelona"],
+            "Andalucía": ["Sevilla"],
+            "Comunidad Valenciana": ["Valencia"],
+            "Texas": ["Houston"],
+            "Florida": ["Miami"],
+            "Nueva York": ["Buffalo"],
+            "Metropolitana": ["Santiago"],
+            "Valparaíso": ["Viña del Mar"],
+            "Biobío": ["Concepción"],
+            "Coquimbo": ["La Serena"],
+            "Arequipa": ["Arequipa"],
+            "Cusco": ["Cusco"],
+            "La Libertad": ["Trujillo"]
+        };
+        const ISPS = ["Telefónica", "Claro", "Tigo", "AT&T", "Fibertel", "Movistar", "VTR"];
+        const STREETS = ["Av. Principal", "Calle Falsa", "Bv. Libertad", "Paseo Colón", "Ruta 3"];
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function generateRandomIP() {
+            return `${getRandomInt(1, 255)}.${getRandomInt(0, 255)}.${getRandomInt(0, 255)}.${getRandomInt(1, 254)}`;
+        }
+
+        function generateRandomDate() {
+            const now = new Date();
+            const past = new Date(now.getTime() - getRandomInt(1, 30) * 24 * 60 * 60 * 1000); // Últimos 30 días
+            return `${past.getDate().toString().padStart(2, '0')}/${(past.getMonth() + 1).toString().padStart(2, '0')}/${past.getFullYear()} ${past.getHours().toString().padStart(2, '0')}:${past.getMinutes().toString().padStart(2, '0')}`;
+        }
+
+        function parseLink(link) {
+            let platform = "Otros";
+            // Eliminar parámetros de consulta y anclas para una limpieza más precisa del usuario
+            let cleanLink = link.split('?')[0].split('#')[0];
+            let user = cleanLink.split('/').pop().replace(/@/g, ''); 
+            
+            if (link.includes("facebook.com")) platform = "Facebook";
+            else if (link.includes("instagram.com")) platform = "Instagram";
+            else if (link.includes("twitter.com") || link.includes("x.com")) platform = "Twitter";
+            else if (link.includes("linkedin.com")) platform = "LinkedIn";
+            else if (link.includes("youtube.com")) platform = "YouTube";
+
+            if (platform === "LinkedIn" && link.includes("/in/")) {
+                user = link.split('/in/')[1].split('/')[0];
+            } else if (platform === "YouTube" && link.includes("@")) {
+                user = link.split('@')[1].split('/')[0]; // Asegura que solo tome el handle
+            } else if (platform === "Facebook" && link.includes("/groups/")) {
+                user = 'Grupo-FB';
+            } else if (platform === "Facebook" && link.includes("/pages/")) {
+                user = 'Página-FB';
+            }
+
+            // Fallback en caso de que el usuario siga siendo el dominio o vacío
+            if (user.includes('.') || user === '' || user.includes('com') || user.includes('www')) {
+                user = 'Usuario Desconocido';
+            }
+
+            return { platform, user };
+        }
+
+        // *** Función Principal para Generar Datos de Ubicación y Perfiles ***
+        function generarDatosSimulados(link, index) {
+            const parsed = parseLink(link);
+            const country = COUNTRIES[getRandomInt(0, COUNTRIES.length - 1)];
+            const regionList = REGIONS[country] || [country];
+            const region = regionList[getRandomInt(0, regionList.length - 1)];
+            const cityList = CITIES[region] || (CITIES[country] ? CITIES[country] : ['Ciudad Genérica']);
+            const city = cityList[getRandomInt(0, cityList.length - 1)];
+            const street = STREETS[getRandomInt(0, STREETS.length - 1)];
+            const streetNumber = getRandomInt(100, 9999);
+            const postalCode = getRandomInt(1000, 9999);
+            const ip = generateRandomIP();
+            const risk = RISK_LEVELS[getRandomInt(0, RISK_LEVELS.length - 1)];
+
+            // Generación de coordenadas realistas para simulación
+            let lat, lon;
+            if (country === "Argentina") {
+                lat = getRandomInt(-35, -25) + Math.random(); // Zona centro-norte
+                lon = getRandomInt(-68, -58) - Math.random();
+            } else {
+                lat = (Math.random() * 90) * (Math.round(Math.random()) ? 1 : -1);
+                lon = (Math.random() * 180) * (Math.round(Math.random()) ? 1 : -1);
+            }
+
+            return {
+                id: index + 1,
+                link: link,
+                platform: parsed.platform,
+                user: parsed.user,
+                country: country,
+                region: region,
+                city: city,
+                ip: ip,
+                risk: risk,
+                lastActivity: generateRandomDate(),
+                locationDetails: {
+                    ipAddress: ip,
+                    country: country,
+                    region: region,
+                    city: city,
+                    neighborhood: `Barrio ${getRandomInt(1, 50)}`,
+                    street: `${street} ${streetNumber}`,
+                    address: `${street}, ${city}, ${region}, ${country}`,
+                    postalCode: postalCode,
+                    isp: ISPS[getRandomInt(0, ISPS.length - 1)],
+                    coords: `${lat.toFixed(5)}, ${lon.toFixed(5)}`
+                }
+            };
+        }
+        // ******************************************************************
+
+        function renderTable(data) {
+            const tbody = document.querySelector('#resultado tbody');
+            tbody.innerHTML = '';
+            const countryFilterElement = document.getElementById('filterCountry');
+            const platformFilter = document.getElementById('filterPlatform').value;
+            const searchUser = document.getElementById('searchUser').value.toLowerCase();
+            let uniqueCountries = new Set();
+            
+            // 1. Recoger todos los países de los datos analizados
+            data.forEach(item => uniqueCountries.add(item.country));
+            
+            // 2. Rellenar filtro de países
+            const currentCountryFilterValue = countryFilterElement.value; // Mantener el valor actual
+            countryFilterElement.innerHTML = '<option value="all">Todos</option>';
+            uniqueCountries.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                countryFilterElement.appendChild(option);
+            });
+            countryFilterElement.value = currentCountryFilterValue; // Restaurar el valor
+            
+            const selectedCountryFilter = countryFilterElement.value;
+
+            // 3. Aplicar filtros
+            const filteredData = data.filter(item => {
+                const countryMatch = selectedCountryFilter === 'all' || item.country === selectedCountryFilter;
+                const platformMatch = platformFilter === 'all' || item.platform === platformFilter;
+                const userMatch = item.user.toLowerCase().includes(searchUser) || item.link.toLowerCase().includes(searchUser);
+                return countryMatch && platformMatch && userMatch;
+            });
+
+            // 4. Contadores
+            let fbCount = 0, igCount = 0, twCount = 0, otherCount = 0;
+
+            filteredData.forEach((item, index) => {
+                // Contar para estadísticas (del conjunto filtrado)
+                switch (item.platform) {
+                    case 'Facebook': fbCount++; break;
+                    case 'Instagram': igCount++; break;
+                    case 'Twitter': twCount++; break;
+                    default: otherCount++; break;
+                }
+
+                const row = tbody.insertRow();
+                row.insertCell().textContent = item.id;
+                row.insertCell().innerHTML = `<span class="platform-${item.platform.toLowerCase()}" style="font-weight: bold;">${item.platform}</span>`;
+                row.insertCell().textContent = item.user;
+                row.insertCell().textContent = item.country;
+                row.insertCell().textContent = item.region;
+                row.insertCell().textContent = item.city;
+                row.insertCell().textContent = item.ip;
+                row.insertCell().innerHTML = `<span class="tag tag-${item.risk}">${item.risk.split('-')[0].toUpperCase()}</span>`;
+                row.insertCell().textContent = item.lastActivity;
+                
+                const actionsCell = row.insertCell();
+                // Usamos item.id para el índice correcto si es un subconjunto de ANALYZED_DATA
+                const originalIndex = ANALYZED_DATA.findIndex(d => d.id === item.id); 
+
+                actionsCell.innerHTML = `
+                    <div class="actions">
+                        <button class="action-btn btn-primary" onclick="showLocationDetails(${originalIndex})">
+                            Ubicación
+                        </button>
+                        <button class="action-btn btn-secondary" onclick="window.open('${item.link}', '_blank')">
+                            Ver Perfil
+                        </button>
+                    </div>
+                `;
+            });
+
+            // 5. Actualizar estadísticas (del total de datos analizados, no solo filtrados)
+            const totalData = ANALYZED_DATA;
+            const totalFbCount = totalData.filter(d => d.platform === 'Facebook').length;
+            const totalIgCount = totalData.filter(d => d.platform === 'Instagram').length;
+            const totalTwCount = totalData.filter(d => d.platform === 'Twitter').length;
+            const totalOtherCount = totalData.filter(d => d.platform !== 'Facebook' && d.platform !== 'Instagram' && d.platform !== 'Twitter').length;
+
+            document.getElementById('totalProfiles').textContent = totalData.length;
+            document.getElementById('facebookCount').textContent = totalFbCount;
+            document.getElementById('instagramCount').textContent = totalIgCount;
+            document.getElementById('twitterCount').textContent = totalTwCount;
+            document.getElementById('otherCount').textContent = totalOtherCount;
+        }
+
+        function analyzeLinks() {
+            const linksText = document.getElementById('inputLinks').value.trim();
+            const links = linksText.split('\n').map(link => link.trim()).filter(link => link);
+
+            if (links.length === 0) {
+                alert("Por favor, introduce al menos un enlace.");
+                return;
+            }
+
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('resultado').querySelector('tbody').innerHTML = '';
+            document.getElementById('location-details').style.display = 'none';
+
+            // Detener y ocultar seguimiento simulado al iniciar un nuevo análisis
+            window.stopTrackingSimulated();
+
+            setTimeout(() => {
+                ANALYZED_DATA = links.map((link, index) => generarDatosSimulados(link, index));
+                renderTable(ANALYZED_DATA);
+                document.getElementById('loadingIndicator').style.display = 'none';
+            }, 1500); // Simulación de tiempo de análisis
+        }
+        
+        // Función para mostrar la ubicación detallada en la nueva sección
+        window.showLocationDetails = function(index) {
+            const data = ANALYZED_DATA[index];
+            const details = data.locationDetails;
+            CURRENT_TRACKING_PROFILE_INDEX = index; // Establece el perfil a seguir/mostrar
+
+            document.getElementById('current-profile-user').textContent = data.user;
+            document.getElementById('location-ip-address').textContent = details.ipAddress;
+            document.getElementById('location-country').textContent = details.country;
+            document.getElementById('location-region').textContent = details.region;
+            document.getElementById('location-city').textContent = details.city;
+            document.getElementById('location-neighborhood').textContent = details.neighborhood;
+            document.getElementById('location-street').textContent = details.street;
+            document.getElementById('location-address').textContent = details.address;
+            document.getElementById('location-postal').textContent = details.postalCode;
+            document.getElementById('location-isp').textContent = details.isp;
+            document.getElementById('location-coords').textContent = details.coords;
+
+            document.getElementById('location-map-container').innerHTML = `
+                <div class="map-placeholder" style="background-color: #e6f3ff; color: var(--primary);">
+                   
+                    <p style="font-size: 1.5em; font-weight: bold;">${details.city}, ${details.country}</p>
+                    <p style="font-size: 0.9em;">(${details.coords})</p>
+                   
+                </div>
+            `;
+            document.getElementById('location-details').style.display = 'block';
+            document.getElementById('location-details').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Función para actualizar los detalles de ubicación (simulada)
+        window.refreshLocationDetails = function() {
+            if (CURRENT_TRACKING_PROFILE_INDEX === -1) {
+                alert("Selecciona un perfil de la tabla para ver/actualizar su ubicación.");
+                return;
+            }
+
+            const currentLink = ANALYZED_DATA[CURRENT_TRACKING_PROFILE_INDEX].link;
+            const newLocation = generarDatosSimulados(currentLink, CURRENT_TRACKING_PROFILE_INDEX);
+            ANALYZED_DATA[CURRENT_TRACKING_PROFILE_INDEX] = {
+                ...ANALYZED_DATA[CURRENT_TRACKING_PROFILE_INDEX],
+                ...newLocation, // Esto actualiza todos los campos principales (país, región, etc.)
+                lastActivity: generateRandomDate(),
+                locationDetails: newLocation.locationDetails
+            };
+
+            showLocationDetails(CURRENT_TRACKING_PROFILE_INDEX);
+            renderTable(ANALYZED_DATA); // Vuelve a renderizar la tabla con la nueva info
+        }
+
+        // Función de seguimiento simulado
+        window.startTrackingSimulated = function() {
+            if (ANALYZED_DATA.length === 0) {
+                 alert("Por favor, analiza al menos un enlace antes de iniciar el seguimiento.");
+                 return;
+            }
+
+            if (trackingInterval) return; // Evitar iniciar dos veces
+            
+            const historyContainer = document.getElementById('tracking-history');
+            const historyItems = document.getElementById('history-items');
+            historyContainer.style.display = 'block';
+            historyItems.innerHTML = '<p style="color: var(--secondary); font-weight: bold; padding: 10px;">Iniciando seguimiento del primer perfil...</p>';
+            document.getElementById('start-tracking-simulated').style.display = 'none';
+            document.getElementById('stop-tracking-simulated').style.display = 'inline-block';
+            
+            if (CURRENT_TRACKING_PROFILE_INDEX === -1) {
+                 CURRENT_TRACKING_PROFILE_INDEX = 0; // Si no hay seleccionado, selecciona el primero.
+            }
+
+            let counter = 0;
+            const targetIndex = CURRENT_TRACKING_PROFILE_INDEX;
+            const targetUser = ANALYZED_DATA[targetIndex].user;
+            
+            trackingInterval = setInterval(() => {
+                if (counter >= 10) { // Parar después de 10 actualizaciones
+                    window.stopTrackingSimulated();
+                    return;
+                }
+
+                // Simular nueva ubicación para el perfil que se está mostrando o el primero
+                if (targetIndex !== -1) {
+                    const newLocation = generarDatosSimulados(ANALYZED_DATA[targetIndex].link, targetIndex);
+                    
+                    // Actualiza el registro en ANALYZED_DATA y la vista de detalles (si está abierta)
+                    ANALYZED_DATA[targetIndex] = {
+                        ...ANALYZED_DATA[targetIndex],
+                        ...newLocation, 
+                        lastActivity: generateRandomDate(),
+                        locationDetails: newLocation.locationDetails
+                    };
+                    renderTable(ANALYZED_DATA); 
+                    
+                    if (document.getElementById('location-details').style.display !== 'none' && parseInt(document.querySelector('#resultado tbody tr:first-child td:first-child').textContent) === ANALYZED_DATA[targetIndex].id) {
+                         // Solo actualiza los detalles si es el perfil que está abierto en la sección de detalles
+                        showLocationDetails(targetIndex);
+                    }
+
+                    const time = new Date().toLocaleTimeString();
+                    const newItem = document.createElement('div');
+                    newItem.classList.add('history-item');
+                    newItem.innerHTML = `
+                        <div class="history-info">
+                            <strong>[${time}] Nueva Ubicación (${targetUser})</strong>: ${newLocation.city}, ${newLocation.country}
+                        </div>
+                        <span class="history-time">${newLocation.locationDetails.coords}</span>
+                    `;
+                    // Insertar al principio
+                    historyItems.prepend(newItem);
+                    
+                    if (counter === 0) {
+                         historyItems.innerHTML = ''; // Limpia el mensaje de inicio
+                         historyItems.prepend(newItem);
+                    }
+
+                    // Limpiar historial si es muy largo
+                    if (historyItems.children.length > 15) {
+                        historyItems.removeChild(historyItems.lastChild);
+                    }
+                }
+                
+                counter++;
+            }, 3000); // Simulación de actualización cada 3 segundos
+        }
+
+        // Función para detener el seguimiento simulado
+        window.stopTrackingSimulated = function() {
+            clearInterval(trackingInterval);
+            trackingInterval = null;
+            document.getElementById('start-tracking-simulated').style.display = 'inline-block';
+            document.getElementById('stop-tracking-simulated').style.display = 'none';
+            
+            const historyItems = document.getElementById('history-items');
+            if (historyItems) {
+                historyItems.innerHTML = '<p style="color: var(--danger-color); font-weight: bold; padding: 10px;">Seguimiento Detenido.</p>' + historyItems.innerHTML;
+            }
+        }
+        
+        // Función para insertar ejemplos
+        function insertExample() {
+            document.getElementById('inputLinks').value = `https://facebook.com/analunaoficial
+https://instagram.com/juanperez.ar
+https://twitter.com/dev_js
+https://linkedin.com/in/maria-garcia-dev
+https://youtube.com/@techreviews
+https://miweb.com/perfil/otro-usuario`;
+            analyzeLinks();
+        }
+        
+        // Función para limpiar
+        function clearData() {
+            document.getElementById('inputLinks').value = '';
+            document.getElementById('resultado').querySelector('tbody').innerHTML = '';
+            document.getElementById('totalProfiles').textContent = '0';
+            document.getElementById('facebookCount').textContent = '0';
+            document.getElementById('instagramCount').textContent = '0';
+            document.getElementById('twitterCount').textContent = '0';
+            document.getElementById('otherCount').textContent = '0';
+            document.getElementById('location-details').style.display = 'none';
+            window.stopTrackingSimulated();
+            ANALYZED_DATA = [];
+        }
+
+        // Función para exportar a PDF
+        window.exportToPDF = async function() {
+            if (ANALYZED_DATA.length === 0) {
+                alert("No hay datos para exportar.");
+                return;
+            }
+            
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const element = document.querySelector('.container');
+            const originalY = element.style.marginTop;
+            element.style.marginTop = '0'; // Eliminar margen superior para el screenshot
+
+            try {
+                const canvas = await html2canvas(element, {
+                    scale: 2, // Mejor resolución
+                    useCORS: true,
+                    windowWidth: 1200,
+                    scrollY: -window.scrollY // Asegurar que la captura sea correcta
+                });
+
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 297; // A4 height in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                doc.save('Reporte_Analisis_Social.pdf');
+                
+            } catch (error) {
+                console.error("Error al generar PDF:", error);
+                alert("Ocurrió un error al generar el PDF. Revisa la consola para más detalles.");
+            } finally {
+                 element.style.marginTop = originalY; // Restaurar el margen
+            }
+        }
+        
+        // Event Listeners
+        document.getElementById('btnAnalizar').addEventListener('click', analyzeLinks);
+        document.getElementById('btnLimpiar').addEventListener('click', clearData);
+        document.getElementById('btnEjemplo').addEventListener('click', insertExample);
+        document.getElementById('filterPlatform').addEventListener('change', () => renderTable(ANALYZED_DATA));
+        document.getElementById('filterCountry').addEventListener('change', () => renderTable(ANALYZED_DATA));
+        document.getElementById('searchUser').addEventListener('input', () => renderTable(ANALYZED_DATA));
+        document.getElementById('start-tracking-simulated').addEventListener('click', window.startTrackingSimulated);
+        document.getElementById('stop-tracking-simulated').addEventListener('click', window.stopTrackingSimulated);
+        document.getElementById('refresh-location-details').addEventListener('click', window.refreshLocationDetails);
+
+        // Llamar a analyzeLinks con datos de ejemplo al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+             insertExample(); // Cargar con datos de ejemplo al inicio
+        });
+        
+    </script>
+</body>
+</html>
