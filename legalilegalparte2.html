@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montaña Ciudad - Reflexión sobre la Verdad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0f7fa, #bbdefb, #f8bbd0, #d1c4e9);
+            color: #37474f;
+            border-radius: 10px;
+  max-width: 900px;
+  margin: 90px auto;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ff4081, #7b1fa2, #2196f3, #00bcd4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 64, 129, 0.3);
+            animation: title-glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes title-glow {
+            0% { text-shadow: 0 0 15px rgba(255, 64, 129, 0.3); }
+            100% { text-shadow: 0 0 25px rgba(33, 150, 243, 0.5); }
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #546e7a;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .mountain-city {
+            position: relative;
+            height: 450px;
+            margin: 40px 0;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to bottom, #81d4fa, #4fc3f7, #29b6f6, #0288d1);
+        }
+
+        .mountain-range {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 70%;
+            background: linear-gradient(to top, #4db6ac, #26a69a, #00897b, #00695c);
+            clip-path: polygon(0% 100%, 5% 70%, 10% 80%, 15% 60%, 20% 75%, 25% 50%, 30% 65%, 35% 45%, 40% 60%, 45% 40%, 50% 55%, 55% 35%, 60% 50%, 65% 30%, 70% 45%, 75% 25%, 80% 40%, 85% 20%, 90% 35%, 95% 15%, 100% 30%, 100% 100%);
+        }
+
+        .cityscape {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to top, #ffb74d, #ffa726, #ff9800, #f57c00);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+        }
+
+        .building {
+            background: #5c6bc0;
+            width: 5%;
+            margin: 0 1%;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 0 15px rgba(92, 107, 192, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .building:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(92, 107, 192, 0.7);
+        }
+
+        .building:nth-child(odd) {
+            height: 80%;
+            background: linear-gradient(to top, #7986cb, #5c6bc0);
+        }
+
+        .building:nth-child(even) {
+            height: 60%;
+            background: linear-gradient(to top, #5c6bc0, #3f51b5);
+        }
+
+        .building:nth-child(3n) {
+            height: 90%;
+            background: linear-gradient(to top, #9fa8da, #7986cb);
+        }
+
+        .building:nth-child(4n) {
+            height: 50%;
+            background: linear-gradient(to top, #5c6bc0, #3949ab);
+        }
+
+        .building:nth-child(5n) {
+            height: 70%;
+            background: linear-gradient(to top, #8c9eff, #536dfe);
+        }
+
+        .sun {
+            position: absolute;
+            top: 50px;
+            right: 100px;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #ffeb3b, #ffc107);
+            border-radius: 50%;
+            box-shadow: 0 0 40px #ffeb3b, 0 0 80px rgba(255, 235, 59, 0.5);
+            animation: sun-pulse 4s infinite alternate;
+        }
+
+        @keyframes sun-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 40px #ffeb3b, 0 0 80px rgba(255, 235, 59, 0.5); }
+            100% { transform: scale(1.1); box-shadow: 0 0 60px #ffeb3b, 0 0 100px rgba(255, 235, 59, 0.7); }
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            animation: cloud-move 20s linear infinite;
+        }
+
+        .cloud-1 {
+            width: 120px;
+            height: 50px;
+            top: 80px;
+            left: -150px;
+            animation-duration: 25s;
+        }
+
+        .cloud-2 {
+            width: 100px;
+            height: 40px;
+            top: 120px;
+            left: -150px;
+            animation-duration: 30s;
+            animation-delay: 5s;
+        }
+
+        .cloud-3 {
+            width: 150px;
+            height: 60px;
+            top: 60px;
+            left: -150px;
+            animation-duration: 35s;
+            animation-delay: 10s;
+        }
+
+        @keyframes cloud-move {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100vw + 200px)); }
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            margin: -2px;
+            border-radius: inherit;
+            background: linear-gradient(45deg, #ff4081, #7b1fa2, #2196f3, #00bcd4);
+        }
+
+        .content p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .highlight {
+            color: #d81b60;
+            font-weight: bold;
+            background: rgba(216, 27, 96, 0.1);
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .quote {
+            font-style: italic;
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #e1bee7, #f8bbd0);
+            color: #7b1fa2;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(123, 31, 162, 0.2);
+            position: relative;
+        }
+
+        .quote::before, .quote::after {
+            content: '"';
+            font-size: 3rem;
+            color: #7b1fa2;
+            opacity: 0.5;
+            position: absolute;
+        }
+
+        .quote::before {
+            top: 10px;
+            left: 20px;
+        }
+
+        .quote::after {
+            bottom: 10px;
+            right: 20px;
+        }
+
+        .interactive-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            transition: transform 0.4s, box-shadow 0.4s;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #ff4081, #7b1fa2, #2196f3, #00bcd4);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            color: #7b1fa2;
+            margin-bottom: 15px;
+            border-bottom: 2px solid rgba(123, 31, 162, 0.2);
+            padding-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 2px solid rgba(123, 31, 162, 0.2);
+            color: #546e7a;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+            color: #d81b60;
+            font-weight: bold;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 0.7; transform: scale(1); }
+        }
+
+        .color-change {
+            animation: color-change 5s infinite alternate;
+        }
+
+        @keyframes color-change {
+            0% { color: #ff4081; }
+            25% { color: #7b1fa2; }
+            50% { color: #2196f3; }
+            75% { color: #00bcd4; }
+            100% { color: #4caf50; }
+        }
+
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 2.5rem;
+            }
+            
+            .mountain-city {
+                height: 350px;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+            
+            .sun {
+                width: 60px;
+                height: 60px;
+                right: 30px;
+            }
+        }
+  table {
+    width: 90%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+    border-top: 6px solid #e74c3c;    /* rojo arriba */
+    border-right: 6px solid #3498db;  /* azul derecha */
+    border-bottom: 6px solid #f1c40f; /* amarillo abajo */
+    border-left: 6px solid #27ae60;   /* verde izquierda */
+    background-color: #f9f9f9;
+  }
+  td {
+    padding: 15px 20px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #ddd;
+  }
+  p {
+    margin: 8px 0;
+    line-height: 1.5;
+  }
+/* Solo estilos para el botón "Volver atrás" */
+.back-button {
+  display: inline-block;
+  padding: 10px 18px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid #333;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  user-select: none;
+}
+
+/* Efecto al pasar el ratón */
+.back-button:hover,
+.back-button:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+  text-decoration: none;
+  outline: none;
+}
+
+/* Efecto al hacer clic */
+.back-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+
+    </style>
+</head>
+<body>
+    <div>
+        <header>
+ <a href="conocimientosaprende.html" class="back-button" aria-label="Volver atrás">Volver atrás</a>
+            
+        </header>
+
+        <div class="mountain-city">
+            <div class="sun"></div>
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+            <div class="cloud cloud-3"></div>
+            <div class="mountain-range"></div>
+            <div class="cityscape">
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+                <div class="building"></div>
+            </div>
+        </div>
+
+
+ <table>
+  <tr>
+    <td><p>
+        Cuando vas a la facultad, a cursos o aprendes programación, debes saber todo sobre la estructura de la web o del software. Además, tienes que reconocer qué procedimientos son legales y cuáles son ilegales. Pero uno dice la verdad porque las personas, tanto mujeres como hombres adultos, quieren saber la verdad. Sin embargo, a algunas personas les da risa en su cabeza porque les encanta escuchar a los demás hablar y pensar que todo son chismes sin fundamentos. Eso significa que no tienen un buen conocimiento. Hay personas que, al enterarse, se enojan o se enfadan. Esas personas, que son adultas, en toda su vida han preferido ocultar la verdad, como las mentiras que dice la policía de ciberdelitos o la ocultación que hace esta policía al no poner medios en redes sociales o sitios web adecuados para decir la verdad.
+Antes de hablar la verdad, quiero aclarar que esto no es un chiste, ni una broma, ni joda. Hablo desde la experiencia y la realidad, no es imaginación ni algo para tomar a la ligera o para decir que es boludez o pelotudez.
+
+         </p>
+        <p>
+            En la vida, siempre hay personas adultas, hombres y mujeres, que tienen problemas en su mentalidad o en su forma de pensar. No me refiero a personas con discapacidades intelectuales o enfermedades como retraso mental, trastornos del neurodesarrollo, autismo (TEA), TDAH, trastornos específicos del aprendizaje (dislexia, discalculia), Síndrome de Down, etc. Lo que digo es que hay gente que, aunque no tenga ninguna de estas enfermedades, realmente carece de inteligencia emocional o de un buen manejo mental para entender o aceptar la verdad.
+Cuando una persona en la sociedad tiene problemas en su salud mental, esto puede afectar su capacidad para pensar con claridad. Muchas veces, estas personas escuchan opiniones de quienes no son profesionales ni tienen conocimiento real sobre programación, como ocurre con algunos abogados, médicos, políticos de cualquier partido y profesionales de otras áreas como profesores de biología, química, matemáticas, educación física, economía, entre otros.
+En un país o sociedad donde ningún programador tenga notebook, celular, router u otro dispositivo electrónico, la programación dejaría de existir. Pero la realidad es que muchas personas están equivocadas respecto a la tecnología y, con respeto, hay quienes ocultan la verdad que aceptan sobornos para ocultar información como los profesionales o no profesional de eso programadores de creadores sitio web o software. culpando injustamente a inocentes que no han cometido ningún delito informático lo que pasa hay la policía cibercrimen le salva ayuda esto delincuentes informáticos hasta los jueces que son comprise de la delicuancia infomatico para que sea justicia que se valla cárcel a los inocentes que no cometio ningun delitos.
+
+        </p>
+        <p>
+            A inocentes que no han cometido ningún delito informático, lo que pasa es que la policía de cibercrimen protege y ayuda a estos delincuentes informáticos. Incluso hay jueces que están aliados con la delincuencia informática, haciendo que la justicia termine enviando a la cárcel a personas inocentes que no cometieron ningún delito.
+A todo esto, explicaremos la verdad sobre la legalidad: cuándo es legal un sitio web o software como facebook, instagram, twitter, whatsApp o telegram, que fueron creados por empresas en estados unidos.
+Estas empresas tienen una organización empresarial estructurada de la siguiente manera:
+
+ </p>
+<tr><td><p>1 clientes<br>Personas o empresas que compran o usan productos o servicios.</p></td></tr>
+  <tr><td><p>2. Alta Dirección / Nivel Estratégico<br>Director General (CEO): Máximo responsable de la empresa, dirige la visión y estrategia.</p></td></tr>
+  <tr><td><p>Presidente del Consejo de Administración: Supervisa la gestión general y toma decisiones clave.</p></td></tr>
+  <tr><td><p>Director de Operaciones (COO): Responsable de las operaciones diarias.</p></td></tr>
+  <tr><td><p>Director Financiero (CFO): Maneja finanzas, presupuesto e inversiones.<br>Director Comercial: Encargado de ventas y relaciones con clientes.</p></td></tr>
+  <tr><td><p>Director de Marketing: Responsable de la imagen y promoción.</p></td></tr>
+  <tr><td><p>Director de Recursos Humanos (CHRO): Gestiona talento y cultura organizacional.</p></td></tr>
+  <tr><td><p>Director de Tecnología (CTO): Supervisa tecnología e innovación.</p></td></tr>
+  <tr><td><p>Director de Producción: Controla procesos productivos.</p></td></tr>
+  <tr><td><p>Director de Calidad: Asegura el cumplimiento de estándares.</p></td></tr>
+  <tr><td><p>Director Legal: Atiende asuntos legales y contratos.</p></td></tr>
+  <tr><td><p>Director de Logística: Administra transporte, almacenes y distribución.</p></td></tr>
+  <tr><td><p>Director de Seguridad: Responsable de la seguridad física y de la información.<br>
+  Director de Comunicación: Maneja comunicación interna y externa.<br>
+  Director de Innovación: Lidera nuevos proyectos y desarrollo.<br>
+  Director de Proyectos: Supervisa planificación y ejecución de proyectos.<br>
+  Director de Compras: Administra la adquisición de insumos.<br>
+  Director de Sostenibilidad: Gestiona políticas ambientales y sociales.</p></td></tr>
+
+       <tr><td><p>3. Gerencia / Nivel Táctico<br>
+Gerente de Ventas: Lidera el equipo de ventas y estrategia comercial.<br>
+Gerente de Producción: Supervisa el proceso productivo.<br>
+Gerente de Marketing: Implementa campañas y análisis de mercado.<br>
+Gerente de Recursos Humanos: Maneja reclutamiento, formación y bienestar.<br>
+Gerente de Finanzas: Controla contabilidad y tesorería.<br>
+Gerente de Logística: Organiza distribución y almacenamiento.<br>
+Gerente de Calidad: Asegura cumplimiento de normas y certificaciones.<br>
+Gerente de Proyectos: Coordina actividades y equipos.<br>
+Gerente de Seguridad: Garantiza seguridad integral.<br>
+Gerente de Compras: Negocia con proveedores y controla inventarios.<br>
+Gerente de Comunicación: Coordina estrategias de comunicación.<br>
+Gerente de Atención al Cliente: Supervisa soporte y servicio.<br>
+Gerente de Innovación: Promueve ideas y nuevos desarrollos.</p></td></tr>
+
+<tr><td><p>4. Jefaturas y Supervisión / Nivel Operativo<br>
+Jefe de Equipo de Ventas: Coordina vendedores y seguimiento a clientes.<br>
+Jefe de Producción: Controla turnos y cumplimiento de metas.<br>
+Supervisor de Atención al Cliente: Gestiona equipo de soporte.<br>
+Supervisor de Logística: Supervisa almacenaje y reparto.<br>
+Supervisor de Mantenimiento: Coordina reparaciones y revisiones.<br>
+Jefe de Calidad: Realiza inspecciones y controles.<br>
+Supervisor de Recursos Humanos: Apoya procesos de personal y capacitación.<br>
+Jefe de Seguridad: Administra guardias y protocolos.<br>
+Jefe de Compras: Controla órdenes y recepción de productos.<br>
+Jefe de Proyectos: Supervisa tareas específicas del proyecto.</p></td></tr>
+  <tr><td><p>5. Personal Técnico y Especialistas<br>
+• Ingeniero de Producción: Optimiza procesos y tecnología.<br>
+• Ingeniero de Calidad: Diseña controles y mejora continua.<br>
+• Ingeniero de Seguridad Industrial: Implementa medidas preventivas.<br>
+• Ingeniero de Mantenimiento: Planifica reparaciones y mantenimiento preventivo.<br>
+• Analista Financiero: Estudia datos económicos y reporta riesgos.<br>
+• Analista de Recursos Humanos: Apoya selección y desarrollo.<br>
+• Analista de Mercado: Investiga tendencias y competencia.<br>
+• Analista de Datos: Trabaja con grandes bases de datos para tomar decisiones.<br>
+• Contador: Lleva la contabilidad diaria.<br>
+• Auditor Interno: Revisa procesos y cumplimiento de normas.<br>
+• Especialista en Marketing Digital: Ejecuta campañas online.<br>
+• Especialista en Seguridad Informática: Protege sistemas tecnológicos.<br>
+• Especialista en Reclutamiento: Realiza selección de personal.<br>
+• Especialista en Capacitación: Diseña programas de formación.<br>
+• Técnico en Informática: Da soporte técnico y mantenimiento de equipos.<br>
+• Técnico de Mantenimiento: Repara maquinaria y equipos.<br>
+• Técnico de Calidad: Apoya en controles de calidad.</p></td></tr>
+
+  <tr><td><p>6. Personal Administrativo y de Apoyo<br>
+• Asistente Administrativo: Apoya tareas burocráticas y organizativas.<br>
+• Asistente de Recursos Humanos: Realiza funciones de apoyo al área de personal.<br>
+• Asistente de Contabilidad: Apoya en registros financieros.<br>
+• Asistente de Ventas: Apoya a los vendedores con logística y documentación.<br>
+• Asistente de Marketing: Ayuda en campañas y eventos.<br>
+• Recepcionista: Atención y primera impresión a visitantes y llamadas.<br>
+• Auxiliar Administrativo: Apoya en archivo y gestión documental.<br>
+• Auxiliar de Inventarios: Controla entradas y salidas de materiales.<br>
+• Auxiliar de Limpieza: Mantiene las instalaciones en condiciones óptimas.<br>
+• Personal de Seguridad: Protege las instalaciones y personas.<br>
+• Conductor: Transporta personas o mercancías.<br>
+• Mensajero: Realiza entregas y movimientos internos.<br>
+• Cajero: Maneja cobros y pagos.</p></td></tr>
+     
+        </td>
+  </tr>
+</table>
+<table>
+    <tr>
+        <td>
+
+       
+ <p>
+        Los jefes de empresas como Facebook, Instagram, Twitter, así como de WhatsApp y Telegram, contrataron a programadores para crear software y sitios web. Estos programadores desarrollaron las aplicaciones y plataformas que hoy usamos para comunicarnos y compartir información en todo el mundo, como fotos, comentarios entre usuarios y videos personales.Para acceder a estas aplicaciones, los usuarios deben completar formularios con datos personales, como su número de celular, que se usa en WhatsApp o Telegram. A través de estos números, los usuarios comparten información personal y datos sensibles. En programación, esto se denomina legalidad. Los programadores y analistas de sistemas que crearon el software o sitio web de redes sociales como Facebook, Instagram, Twitter, WhatsApp o Telegram, manejan datos sensibles como nombre, apellido, correo electrónico, número de celular, contraseña, fecha de nacimiento, género, publicaciones, comentarios, fotos y videos.
+ </p> 
+    </td>
+    </tr>
+    <tr><td>
+        <p>
+        Cuando un usuario se comunica en chats con familiares, amigos o acepta solicitudes de amistad (que puede tener hasta 900 amigos, por ejemplo), estas plataformas tienen acceso a todos esos movimientos: en qué país, provincia, localidad o incluso calles se encuentra el usuario, aunque esa información no siempre se muestre públicamente.Cuando instalas el WhatsApp oficial, desarrollado por la empresa de Estados Unidos, el usuario debe seguir un procedimiento: abrir la aplicación, ingresar su número celular, y completar su perfil con fotos y nombre. Luego, el usuario puede acceder a sus grupos personales, contactos y las novedades que publican, como mensajes sobre cumpleaños o eventos. También puede buscar canales creados por otros usuarios, encontrar contactos, hacer llamadas grupales o personales, y participar en comunidades donde se comparten documentos sensibles como PDFs, Word, PowerPoint, datos personales (como DNI), ubicación, fotos de vacaciones, entre muchas otras cosas.Lo que quiero decir es que los programadores estadounidenses que trabajan en la empresa whatsApp realmente están recopilando todos esos datos. Esa información se guarda en bases de datos, lo que significa que todos esos datos están almacenados en computadoras. Guardan esa información porque, si los datos que el usuario envía a su familia, tíos, madre, padre, compañeros, amigos, etc. no estuvieran disponibles, el usuario se enojaría y reclamaría.Por esta razón, la empresa mantiene todos esos datos. Pero esta situación puede afectar la salud mental y la inteligencia emocional de los usuarios que no están preparados para manejar esta realidad.Todos los programadores que trabajan en plataformas como Facebook, Instagram, Twitter, WhatsApp y Telegram pueden tener acceso técnico a datos de usuarios que las aplicaciones recopilan: ubicación (país, provincia, localidad y, en algunos casos, coordenadas), contactos, mensajes, fotos, videos y documentos. Esos datos se almacenan en servidores y bases de datos administradas por las empresas o sus proveedores.Las empresas contratan programadores y analistas de sistemas para crear y mantener el software y los sitios web. Esos profesionales diseñan las funciones que permiten compartir contenido, unirse a grupos, subir fotos y documentos (PDF, Word, PowerPoint), enviar ubicaciones y realizar llamadas. Por eso se manejan datos sensibles como nombre, correo, número de celular, fecha de nacimiento, publicaciones, fotos y videos.
+        </p>
+
+    </td>
+  <td>
+    
+</tr>
+    <tr>
+        <td>
+            <p>
+                Hablando de ilegalidad: cuando usuarios comparten material íntimo no consentido (fotos o videos desnudos o pornográficos con su permiso). cometen delitos en muchas jurisdicciones. También hay situaciones graves en las que personas son coaccionadas, amenazadas o explotadas (incluyendo prostitución forzada o amenazas contra su familia) para que publiquen o envíen ese tipo de material por esta razón eso es decir delitos informáticos que hacen esos programadores creadores sitio web o software 
+                      <a href=" https://www.google.com/search?q=porno&oq=porno&gs_lcrp=EgZjaHJvbWUyBggAEEUYOdIBCDEwOTRqMGoxqAIAsAIA&sourceid=chrome&ie=UTF-8&sei=607raOPiLYm75OUPgprmwAs  " target="_blank"> en el google aca estará la evidencia decuentes digitales </a>
+                
+                
+                Algunos programadores pueden ser considerados responsables aunque no hayan obligado 
+                o amenazado directamente a una persona para que publique contenido íntimo. A estos programadores, 
+                que realizan actividades ilegales, se les llama hackers. Estos hackers utilizan herramientas y sistemas 
+                operativos especializados,  ( <a href=" https://www.kali.org/" target="_blank">como Kali Linux </a>
+                
+                ), para instalar software malicioso
+                 en computadoras y dispositivos. A través de estos sistemas, pueden acceder a fotos, videos y otros datos privados 
+                 sin el consentimiento de la persona. Muchos casos de chantaje han surgido cuando personas usan estas imágenes o videos
+                  íntimos para extorsionar a otros. Por ejemplo, una mujer pudo haber tenido una relación sexual con un hombre, y luego,
+                   por dinero, envió a su abogada para que acuse al hombre en la fiscalía, alegando abuso. Sin embargo, esto es un delito
+                    de chantaje y manipulación, y dificulta comprobar la verdad de lo ocurrido, ya que la acusación puede no cumplir con
+                     la ley la hizo falsa denuncia esas mujeres al hombre. Una mujer hizo una denuncia falsa contra un hombre. 
+                     Más tarde, se descubrió que eso hombres y mujeres misma estaba espiándolo mediante el uso del sistema operativo Kali Linux.
+                      A pesar de estos hallazgos, algunos programadores publicaron en su sitio web fotos y videos cosas desnuda que eran cosas relación sexuales. Esta situación generó un gran impacto en distintos sectores de la sociedad están en la cárcel siendo inocentes como Profesores de biología, química, educación física, matemáticas, física, así como profesionales de la industria, electrónica, mecánica, ciencia política, economía y hasta políticos. Algunos políticos habrían intervenido en el caso, hablando directamente con jueces y juezas para proteger a los programadores que publicaron contenido inapropiado, como videos o fotos íntimas. Este material fue difundido a través de plataformas como whatsApp y telegram. Sin embargo, es importante destacar que las personas nunca deberían publicar contenido íntimo en estas aplicaciones como en el whatsapp y telegram que mandaron entre sus contactos o grupos dicho de esa cosa personales(esto sería el delito sexting por la culpa hecha de esa mujer que también se lo dice en ese delito chantaje al hombre que se fue la cárcel por falsa denuncias) aunque se utilicen medidas de seguridad como la verificación en dos pasos o códigos de acceso, la verdad es que no existe una privacidad completamente garantizada. Las empresas detrás de estas aplicaciones prometen seguridad protegida que no hay.  Así que los programadores que instalaron el sistema operativo kali linux sabían perfectamente lo que estaban haciendo estaban enviando y difundiendo contenido íntimo, como fotos o videos que era el delito sexting. 
+            </p>
+        </tr>
+    </td>
+    <tr>
+        <td>
+La policía de cibercrimen defiende más a los programadores que cometieron delitos en lugar de castigarlos. Estos programadores publicaron fotos y videos íntimos, incluso desnudos, en un sitio web. A pesar de ello, la policía no los acusó. En cambio, culparon a la mujer, acusándola de haber hecho una denuncia falsa, argumentando que solo quería arruinar la reputación del hombre, quien en realidad era inocente. En esta situación opinan personas de diversas profesiones, tanto trabajadores como no profesionales: profesores de biología, química, educación física, matemáticas, física, así como profesionales de la industria, electrónica, mecánica, y otros miembros de la sociedad actual. Algunos consideran que la mujer también tiene parte de la culpa por haber enviado fotos y videos íntimos a través de WhatsApp o Telegram. Por otro lado, los programadores que publicaron ese contenido inapropiado en el sitio web también deberían ser juzgados. Por lo tanto, ambos casos deberían ser llevados a juicio.
+
+ </td>
+    </tr>
+       <tr>
+        <td>
+<p>
+    Investigación sobre Grooming y Estafas en Redes Sociales
+</p>
+<p>
+    Primero, quiero decir a las víctimas que no hay que culparlas porque no son culpables de nada.Después, vamos a hablar sobre el grooming que se ha investigado. Los usuarios que entraron visitaron el sitio web de la empresa en Estados Unidos, wix.com. Lo que hicieron fue crear una cuenta en OnlyFans (<a href=" https://onlyfans.com/ " target="_blank"> en OnlyFans  </a>) y pusieron fotos de la víctima, pero todo era una cuenta falsa de OnlyFans. También hubo cuentas falsas en Instagram con las mismas fotos. Todo esto fue reportado a wix.com con ese enlace.Estas acciones fueron consideradas grooming porque siguieron un procedimiento: crear cuentas falsas y publicar contenido íntimo de las víctimas.El grooming es diferente a otras conductas como el sexting o la difusión de contenido íntimo. Aunque el grooming puede involucrar la difusión de material íntimo, la mayoría de las veces se realiza con el objetivo de estafar a otras personas en la sociedad actual.  los delincuentes culpan falsamente a la víctima y luego solicitan dinero para borrar todas esas cuentas repetidas.Sin embargo, la situación siempre deja evidencia, huellas o rastros, como en sitios web de monitoreo como urlscan.io. aquí demuestro una de las evidencias procesadas del rastro de los delincuentes en (<a href="  https://urlscan.io/domain/signupforfree214.wixsite.com" target="_blank"> primera evidencia en url scan </a>(<a href="https://urlscan.io/result/fd1b9cde-78be-489c-8cf0-7ab7597cf840?fbclid=IwAR2pphUfoZ5mcavUvq-0HrYLsapxxbjkrrRftMifnDYgecVtrb9BmXmtgdc " target="_blank"> segunda evidencia url scan</a>
+</p>
+
+ </td>
+    </tr>
+    <tr>
+        <td>
+<p>
+    y pusieron fotos de la víctima, pero todo era una cuenta falsa de OnlyFans.También hubo cuentas falsas en Instagram con las mismas fotos. Todo esto fue reportado a wix.com con ese enlace.Estas acciones fueron consideradas grooming porque siguieron un procedimiento: crear cuentas falsas y publicar contenido íntimo de las víctimas.El grooming es diferente a otras conductas como el sexting o la difusión de contenido íntimo. Aunque el grooming puede involucrar la difusión de material íntimo, la mayoría de las veces se realiza con el objetivo de estafar a otras personas en la sociedad actual. Por ejemplo, los delincuentes culpan falsamente a la víctima y luego solicitan dinero para borrar todas esas cuentas repetidas.Sin embargo, la situación siempre deja evidencia, huellas o rastros, como en sitios web de monitoreo como urlscan.io. Aquí demuestro una de las evidencias procesadas del rastro de los delincuentes.La investigación abarca desde 2011 hasta 2021. En 2021 se borraron las cuentas falsas de Instagram creadas, pero sigue existiendo una gran sospecha sobre la posible participación de algunos compañeros, amigos de la víctima o incluso personas desconocidas que no tienen relación con ella y con quienes nunca tuvo contacto o confianza.La mayoría sospecha de ellos porque, al crear cuentas en Wix, los programadores o analistas de sistemas no son responsables, ya que los usuarios son quienes se registran en la plataforma web   <a href=" https://users.wix.com/signin/signup/password?referralInfo=wix_homepage_hero_section_get_started&loginCompName=wix_homepage_hero_section_get_started&postSignUp=https%3A%2F%2Fwww.wix.com%2Fnew%2Fintro&postLogin=https://manage.wix.com/account/route&overrideLocale=&loginDialogContext=forgot-password&originUrl=https%3A%2F%2Fwww.wix.com&forceRender=true" target="_blank"> Se registra en wix </a> y publican fotos o videos directamente pone al sitio web wix eso usuario después manda el link a donde los demás aceden. Estos usuarios son los culpables del grooming y pueden ser tanto mujeres como hombres. Aunque empresas como Facebook, Instagram y Twitter recopilen datos personales sensibles, es decir, realicen vigilancia sobre los usuarios, los programadores, por indicación de los jefes de la empresa, recomiendan que los usuarios protejan sus redes sociales. Esto implica configurar la cuenta en modo privado en Instagram y Twitter, así como restringir el acceso para que la cuenta sea privada también en Facebook.
+</p>
+        </td>
+    </tr>
+    <tr><td>
+        Hoy en día llamamos 'inteligencia artificial' a lo que en realidad son algoritmos y fórmulas matemáticas creadas por programadores. Aunque a veces parezca algo mágico, todo funciona con lógica, datos y cálculos. Cada vez más personas están tomando conciencia de los aspectos legales y éticos que implica el uso de la IA. puede tener aplicaciones muy positivas, pero también puede utilizarse de forma ilegal. Lo importante es entender sus beneficios y límites. Recomiendo ver algunos videos en YouTube sobre este tema, donde se explica lo bueno que puede lograr la programación cuando se usa dentro del marco legal. Al terminar un curso completo sobre inteligencia artificial muchos de los cuales son gratuitos no solo se obtienen conocimientos técnicos, sino también una mejor comprensión del impacto social, legal y ético que estas tecnologías tienen en el mundo actual. Es una oportunidad para aprender, reflexionar y prepararse para usarlas con responsabilidad.
+    </td></tr>
+    <tr><td>
+     Los aspectos positivos de la integración tecnológica en el ámbito legal. Visita los videos en YouTube: allí se explica para qué se utiliza la tecnología en un ámbito legal
+    </td></tr>
+
+
+
+</table>
+<table border="1">
+  <tr>
+    <td>
+      <!-- Enlaces de YouTube sobre tecnología -->
+      <p>
+        <a href="https://www.youtube.com/watch?v=T7juHOXhOEA" target="_blank">
+          La tecnología está cambiando la psicología
+        </a>
+      </p>
+      <p>
+        <a href="https://www.youtube.com/watch?v=LPnOR9Uhjdw" target="_blank">
+          Tecnología en la educación
+        </a>
+      </p>
+      <p>
+        <a href="https://www.youtube.com/watch?v=GN6qmy7Gtic" target="_blank">
+          Tecnologías de la Información y Comunicación (TIC)
+        </a>
+      </p>
+      <p>
+        <a href="https://www.youtube.com/watch?v=Lo0AkAJo6aM" target="_blank">
+          Soluciones tecnológicas que impulsan la seguridad vial
+        </a>
+      </p>
+      <p>
+        <a href="https://www.youtube.com/watch?v=ziyGEQLE-VI" target="_blank">
+          Tecnología en la producción musical
+        </a>
+      </p>
+      <p>
+        <a href="https://www.youtube.com/watch?v=QrHo1NdaW54" target="_blank">
+          Cómo la inteligencia artificial está revolucionando la medicina
+        </a>
+      </p>
+      <p>
+        <a href="https://www.youtube.com/watch?v=JZ4Ew-Nug7g" target="_blank">
+          Diagnóstico médico por imagen e Inteligencia Artificial
+        </a>
+      </p>
+      <p>
+        <a href="https://www.youtube.com/watch?v=7PMy-Wq1v-Y" target="_blank">
+          ¿Por qué es importante la tecnología? ¿Cómo ha cambiado nuestras vidas?
+        </a>
+      </p>
+
+</table>
+
+
+
+    <script>
+        // Crear nubes adicionales
+        function createClouds() {
+            const mountainCity = document.querySelector('.mountain-city');
+            
+            for (let i = 0; i < 5; i++) {
+                const cloud = document.createElement('div');
+                cloud.classList.add('cloud');
+                
+                // Tamaño aleatorio
+                const width = Math.random() * 100 + 80;
+                const height = width * 0.4;
+                cloud.style.width = `${width}px`;
+                cloud.style.height = `${height}px`;
+                
+                // Posición aleatoria
+                cloud.style.top = `${Math.random() * 100 + 30}px`;
+                cloud.style.left = `${Math.random() * 100 - 20}%`;
+                
+                // Animación aleatoria
+                const duration = Math.random() * 30 + 20;
+                const delay = Math.random() * 20;
+                cloud.style.animation = `cloud-move ${duration}s linear infinite ${delay}s`;
+                
+                mountainCity.appendChild(cloud);
+            }
+        }
+        
+        // Función para resaltar tarjetas al hacer clic
+        function toggleHighlight(card) {
+            card.classList.toggle('highlight');
+            if (card.classList.contains('highlight')) {
+                card.style.background = 'linear-gradient(135deg, #e1bee7, #f8bbd0)';
+                card.style.color = '#7b1fa2';
+            } else {
+                card.style.background = 'rgba(255, 255, 255, 0.9)';
+                card.style.color = '#37474f';
+            }
+        }
+        
+        // Efecto de escritura para el título
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            
+            type();
+        }
+        
+        // Cambiar colores de fondo gradualmente
+        function changeBackground() {
+            const colors = [
+                'linear-gradient(135deg, #e0f7fa, #bbdefb, #f8bbd0, #d1c4e9)',
+                'linear-gradient(135deg, #e1f5fe, #e8f5e9, #fff3e0, #fce4ec)',
+                'linear-gradient(135deg, #f3e5f5, #e3f2fd, #e0f2f1, #fff8e1)',
+                'linear-gradient(135deg, #ffebee, #f3e5f5, #e8eaf6, #e3f2fd)'
+            ];
+            
+            let currentIndex = 0;
+            
+            setInterval(() => {
+                document.body.style.background = colors[currentIndex];
+                currentIndex = (currentIndex + 1) % colors.length;
+            }, 10000);
+        }
+        
+        // Inicializar cuando el documento esté cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            createClouds();
+            changeBackground();
+            
+            // Aplicar efecto de escritura al título
+            const title = document.querySelector('h1');
+            const originalText = title.textContent;
+            typeWriter(title, originalText, 150);
+            
+            // Añadir efecto de aparición a las tarjetas
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.7s, transform 0.7s';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 300 + (index * 200));
+            });
+            
+            // Animación para los edificios
+            const buildings = document.querySelectorAll('.building');
+            buildings.forEach((building, index) => {
+                building.style.transform = 'translateY(20px)';
+                building.style.opacity = '0.7';
+                
+                setTimeout(() => {
+                    building.style.transition = 'transform 0.5s, opacity 0.5s';
+                    building.style.transform = 'translateY(0)';
+                    building.style.opacity = '1';
+                }, 500 + (index * 100));
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor Profesional Avanzado de Imágenes v4.5 - EXPANSIÓN MASIVA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --success: #4cc9f0;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --gray: #adb5bd;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /* Variables de Marco Personalizado (Valor por defecto) */
+            --border-color: var(--primary);
+            --border-width: 3px;
+            --border-radius: 20px;
+            --border-style: solid;
+            --background-preview: white; /* Color inicial del fondo del marco */
+        }
+
+        .dark-mode {
+            --primary: #5e72e4;
+            --secondary: #825ee4;
+            --accent: #f5365c;
+            --success: #11cdef;
+            --dark: #f8f9fa;
+            --light: #2b2d42;
+            --gray: #8a92a3;
+            --card-bg: rgba(43, 45, 66, 0.95);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --bg-gradient: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            transition: background 0.5s ease;
+               border-radius: 10px;
+  max-width:1100px;
+  margin: 90px auto;
+        }
+
+        .app-container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .app-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--success));
+        }
+
+        .app-title {
+            color: var(--secondary);
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .app-subtitle {
+            color: var(--dark);
+            font-size: 1.2rem;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 25px;
+            height: calc(100vh - 180px);
+        }
+
+        /* Panel de Galería (Izquierda) */
+        .panel {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-title {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-title i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        /* Panel de Pestañas */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .tab {
+            padding: 12px 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 5px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 3px solid transparent;
+            filter: grayscale(0.3);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            filter: grayscale(0);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-item.active {
+            border-color: var(--primary);
+            filter: grayscale(0);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+        }
+        
+        /* Estilos para Fondos y Marcos */
+        .background-option, .frame-preset-option {
+            height: 80px;
+            border-radius: 10px;
+            border: 3px solid #e9ecef;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--dark);
+        }
+
+        .background-option:hover, .frame-preset-option:hover {
+            border-color: var(--primary);
+        }
+
+        .background-option.active, .frame-preset-option.active {
+            border-color: var(--success);
+            box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.3);
+        }
+        
+        .background-option-text {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            right: 5px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 2px 5px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .bg-color-solid {
+            background-color: var(--bg-color);
+        }
+        
+        .bg-color-gradient {
+            background: var(--bg-gradient-code);
+        }
+
+        .bg-image {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        /* Contenedor de Vista Previa (Centro) */
+        .preview-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-image-container {
+            margin-bottom: 25px;
+            display: inline-block;
+            transition: all 0.5s ease-in-out;
+            padding: 20px;
+            
+            /* Variables CSS dinámicas para el marco */
+            background: var(--background-preview); 
+            border: var(--border-width) var(--border-style) var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            position: relative;
+        }
+        
+        /* Estilos de Imagen */
+        .preview-image {
+            max-width: 100%;
+            border-radius: 12px;
+            transition: filter 0.5s, border-radius 0.3s;
+            display: block;
+            margin: 0 auto;
+            width: 500px;
+            height: auto;
+        }
+        
+        /* Estilos para filtros extendidos */
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+        .filter-option {
+            padding: 10px;
+            border-radius: 8px;
+            background: var(--light);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .filter-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-option.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Panel de Personalización (Derecha) */
+        .customization-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+        
+        /* Estilos para controles y botones */
+        .control-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(5px);
+        }
+        
+        .dark-mode .control-group {
+            background: rgba(43, 45, 66, 0.5);
+        }
+
+        .control-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .control-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            background: white;
+            transition: var(--transition);
+        }
+        
+        .dark-mode .control-input {
+            background: var(--dark);
+            color: var(--light);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .control-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+        }
+
+        .value-display {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Nuevos estilos para botones sin colores IA */
+        .btn-neutral {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-neutral:hover {
+            background: #5a6268;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+        }
+
+        .export-options {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dark-mode .export-options {
+            background: rgba(43, 45, 66, 0.5);
+        }
+
+        .export-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        .format-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .format-option {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            background: var(--light);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .format-option.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Estilos de texto para vista previa */
+        .preview-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-top: 20px;
+            color: var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+        }
+
+        .text-outline {
+            -webkit-text-stroke: 1px currentColor;
+            color: transparent;
+        }
+
+        .text-gradient {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-3d {
+            text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25);
+        }
+
+        /* Estilos de filtros */
+        .filter-none { filter: none; }
+        .filter-clarendon { filter: contrast(1.2) saturate(1.35); }
+        .filter-moon { filter: grayscale(1) contrast(1.1) brightness(1.1); }
+        .filter-lark { filter: contrast(0.9) brightness(1.1) saturate(1.1); }
+        .filter-cyberpunk { filter: hue-rotate(90deg) saturate(2) contrast(1.2); }
+        .filter-neon { filter: brightness(1.2) contrast(1.2) saturate(1.5) hue-rotate(180deg); }
+        .filter-golden-hour { filter: sepia(0.2) saturate(1.4) brightness(1.1) contrast(1.1); }
+        .filter-noir { filter: grayscale(1) contrast(1.4) brightness(0.8); }
+        .filter-vaporwave { filter: hue-rotate(270deg) saturate(1.5) brightness(1.1); }
+        .filter-cinematic-cool { filter: contrast(1.2) saturate(1.1) hue-rotate(200deg); }
+        .filter-vintage { filter: sepia(0.5) contrast(1.1) brightness(1.1) saturate(1.3); }
+        .filter-cross-process { filter: sepia(0.3) contrast(1.2) brightness(1.1) saturate(1.5) hue-rotate(-10deg); }
+        .filter-sepia-strong { filter: sepia(0.8) contrast(1.1) brightness(1.1); }
+        .filter-grayscale-strong { filter: grayscale(1) contrast(1.2) brightness(1.1); }
+        .filter-invert { filter: invert(1); }
+        
+        /* Estilos de Texturas de Fondo (para simular el efecto IA) */
+        .bg-liquido { background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><defs><filter id="l"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="20" xChannelSelector="R" yChannelSelector="G"/></filter></defs><rect width="100" height="100" fill="%234c9cff" filter="url(%23l)"/></svg>') center / cover; }
+        .bg-ruido { background: #333 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVRYCWNgYGBgJmDAKIDlBAZkYGBgYGJgAkkFpgcQSAHjAxKkBCRgYEyAWGByN8h6AYGhm/1iFg3+mB0XyXgqG70QxJ8b+c0X0kE0BgYMAAPo/wH3DTS4AAAAAElFTkSuQmCC') repeat; }
+        .bg-bokeh { background: #6a11cb; background: radial-gradient(#6a11cb, #2575fc); filter: blur(10px) brightness(0.8); }
+        .bg-tejido { background-color: #f7f7f7; background-image: repeating-linear-gradient(45deg, #bbb 25%, transparent 25%, transparent 75%, #bbb 75%, #bbb), repeating-linear-gradient(45deg, #bbb 25%, #eee 25%, #eee 75%, #bbb 75%, #bbb); background-position: 0 0, 10px 10px; background-size: 20px 20px; }
+        .bg-flujo-datos { background: #000; background-image: radial-gradient(circle, #0f0 1px, transparent 1px), radial-gradient(circle, #0f0 1px, transparent 1px); background-size: 20px 20px; background-position: 0 0, 10px 10px; }
+        .bg-espejo-roto { background: linear-gradient(135deg, #ff7e5f, #feb47b); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        .bg-plasma { background: linear-gradient(45deg, #ff0000, #ff7b00, #ffea00, #00ff22, #00d9ff, #0026ff, #ff00ea, #ff0000); background-size: 400% 400%; animation: plasma 15s ease infinite; }
+        @keyframes plasma { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        .bg-holograma { background: #1a1a1a; background-image: radial-gradient(circle at 10% 50%, #f72585 1px, transparent 0), radial-gradient(circle at 90% 50%, #4cc9f0 1px, transparent 0); background-size: 100% 100%; filter: saturate(2) hue-rotate(50deg); }
+        .bg-velvet-azul { background: #0b0c1e; box-shadow: inset 0 0 50px rgba(67, 97, 238, 0.5); }
+        .bg-deep-space { background: #000; background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px), radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px), radial-gradient(white, rgba(255,255,255,.1) 1px, transparent 20px), radial-gradient(white, rgba(255,255,255,.05) 1px, transparent 10px); background-size: 500px 500px, 300px 300px, 200px 200px, 100px 100px; background-position: 0 0, 50px 50px, 100px 100px, 150px 150px; }
+        .bg-marmol-negro { background: #1c1c1c; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 10px), repeating-linear-gradient(-45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 10px); }
+        .bg-madera { background: #a0522d; background-image: linear-gradient(90deg, #c08d6d 50%, #8b4513 50%); background-size: 100% 20px; }
+        .bg-papel-arrugado { background: #f0e68c; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="c"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="10" xChannelSelector="R" yChannelSelector="G"/></filter><rect width="100" height="100" fill="%23f0e68c" filter="url(%23c)"/></svg>') center / cover; }
+        .bg-pared-ladrillo { background: #8b0000; background-image: repeating-linear-gradient(90deg, #b22222, #b22222 10px, #8b0000 10px, #8b0000 20px), repeating-linear-gradient(0deg, #b22222, #b22222 10px, #8b0000 10px, #8b0000 20px); background-size: 40px 40px; }
+        .bg-agua-turquesa { background: linear-gradient(to bottom, #40e0d0, #008080); filter: blur(5px) saturate(1.5); }
+        .bg-bokeh-suave { background: radial-gradient(circle at center, #f5f5f5 10%, #dcdcdc 50%, #c0c0c0 100%); filter: blur(5px); }
+        .bg-hojas-sombra { background: #008000; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="leaf" patternUnits="userSpaceOnUse" width="10" height="10"><path d="M 5 0 L 10 10 L 0 10 Z" fill="%23006400" opacity="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23leaf)"/></svg>') center / cover; }
+        .bg-humo-elegante { background: linear-gradient(to right, #ccc, #f5f5f5, #ccc); filter: grayscale(0.5) contrast(0.8); }
+        .bg-patron-diamante { background: #333; background-image: linear-gradient(45deg, #000 25%, transparent 25%), linear-gradient(-45deg, #000 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #000 75%), linear-gradient(-45deg, transparent 75%, #000 75%); background-size: 40px 40px; background-position: 0 0, 0 20px, 20px 20px, 20px 0; }
+        .bg-patron-puntos { background: #fff; background-image: radial-gradient(#333 1px, transparent 1px), radial-gradient(#333 1px, transparent 1px); background-size: 20px 20px; background-position: 0 0, 10px 10px; }
+        .bg-capa-abstracta { background: linear-gradient(45deg, rgba(255,0,0,0.5), rgba(0,255,0,0.5), rgba(0,0,255,0.5)); mix-blend-mode: overlay; }
+        .bg-geometria-lineal { background: #f0f0f0; background-image: linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(180deg, rgba(0,0,0,0.1) 1px, transparent 1px); background-size: 20px 20px; }
+        .bg-arena { background: #f5deb3; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><filter id="a"><feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves="3" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter><rect width="100" height="100" fill="%23f5deb3" filter="url(%23a)"/></svg>') center / cover; }
+        .bg-cielo-noche { background: #000; background-image: radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 10px); background-size: 200px 200px; }
+        .bg-vapor-gris { background: #aaa; background-image: radial-gradient(circle, rgba(255,255,255,0.5) 10%, transparent 50%); filter: blur(5px); }
+
+        /* Nuevos fondos con colores */
+        .bg-azul-claro { background: #e6f7ff; }
+        .bg-verde-menta { background: #e8f5e9; }
+        .bg-rosa-suave { background: #fce4ec; }
+        .bg-amarillo-claro { background: #fffde7; }
+        .bg-lila-suave { background: #f3e5f5; }
+        .bg-naranja-claro { background: #fff3e0; }
+        .bg-turquesa-claro { background: #e0f2f1; }
+        .bg-gris-claro { background: #f5f5f5; }
+        .bg-azul-profundo { background: #0d47a1; }
+        .bg-rojo-pasion { background: #b71c1c; }
+        .bg-verde-oscuro { background: #1b5e20; }
+        .bg-morado-intenso { background: #4a148c; }
+        .bg-dorado { background: #ffd700; }
+        .bg-plateado { background: #c0c0c0; }
+        .bg-bronce { background: #cd7f32; }
+        .bg-pastel-arcoiris { background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #a1c4fd); }
+        .bg-degradado-ocaso { background: linear-gradient(to right, #ff7e5f, #feb47b); }
+        .bg-degradado-oceano { background: linear-gradient(to right, #4facfe, #00f2fe); }
+        .bg-degradado-bosque { background: linear-gradient(to right, #0ba360, #3cba92); }
+        .bg-degradado-atardecer { background: linear-gradient(to right, #ff6b6b, #ffa726); }
+        .bg-degradado-galaxia { background: linear-gradient(to right, #3a1c71, #d76d77, #ffaf7b); }
+
+        /* Loading spinner */
+        .loading {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 10;
+            border-radius: var(--radius);
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(67, 97, 238, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Efectos de texto */
+        .text-effects {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .text-effect {
+            padding: 8px;
+            border-radius: 6px;
+            background: var(--light);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .text-effect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-effect.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .main-content {
+                grid-template-columns: 250px 1fr 300px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .panel-gallery {
+                order: 2;
+                max-height: 400px;
+            }
+
+            .customization-panel {
+                order: 3;
+                max-height: none;
+            }
+
+            .preview-container {
+                order: 1;
+            }
+        }
+        /* Solo estilos para el botón "Volver atrás" */
+.back-button {
+  display: inline-block;
+  padding: 10px 18px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid #333;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  user-select: none;
+}
+
+/* Efecto al pasar el ratón */
+.back-button:hover,
+.back-button:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+  text-decoration: none;
+  outline: none;
+}
+
+/* Efecto al hacer clic */
+.back-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header class="app-header">
+        <h1 class="app-title">Editor Profesional Avanzado de Imágenes</h1>
+        <p class="app-subtitle">Herramientas de Edición Fotográfica con efectos pogramables</p>
+        <button class="theme-toggle" id="theme-toggle"><i class="fas fa-moon"></i></button>
+    </header>
+<a href="artesprincipal.html" class="back-button" aria-label="Volver atrás">Volver atrás</a>
+    <main class="main-content">
+        <div id="gallery-panel" class="panel panel-gallery">
+            <h2 class="panel-title"><i class="fas fa-layer-group"></i> Recursos de Diseño Masivos</h2>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="ai-backgrounds"><i class="fas fa-brain"></i> Fondos IA/Textura</div>
+                <div class="tab" data-tab="non-ai-colors"><i class="fas fa-fill-drip"></i> Colores/Gradientes</div>
+                <div class="tab" data-tab="user-gallery"><i class="fas fa-image"></i> Galería de Fotos</div>
+            </div>
+
+            <div id="tab-content-ai-backgrounds" class="tab-content active">
+                <div id="ai-backgrounds-grid" class="gallery">
+                    <!-- Se llenará con JavaScript -->
+                </div>
+            </div>
+
+            <div id="tab-content-non-ai-colors" class="tab-content">
+                <div id="non-ai-colors-grid" class="gallery">
+                    <!-- Se llenará con JavaScript -->
+                </div>
+            </div>
+
+            <div id="tab-content-user-gallery" class="tab-content">
+                <div id="user-gallery-grid" class="gallery">
+                    <!-- Se llenará con JavaScript -->
+                </div>
+                <div class="button-group" style="margin-top: 15px;">
+                    <button class="btn btn-outline" id="upload-btn"><i class="fas fa-upload"></i> Subir Imagen</button>
+                    <input type="file" id="file-input" accept="image/*" style="display: none;">
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-container">
+            <div id="preview-card" class="preview-card">
+                <div class="loading" id="loading-spinner">
+                    <div class="spinner"></div>
+                    <span>Cargando y aplicando transformaciones...</span>
+                </div>
+                
+                <div id="preview-image-container" class="preview-image-container">
+                    <img id="preview-image" class="preview-image filter-none" src="https://picsum.photos/500/500?random=1" alt="Imagen de Previsualización">
+                    <p id="preview-title" class="preview-title text-shadow">¡Tu Imagen Brillante!</p>
+                </div>
+            </div>
+            
+            <div id="filter-panel" class="panel">
+                <h2 class="panel-title"><i class="fas fa-magic"></i> Filtros de Imagen (Avanzados)</h2>
+                <p class="app-subtitle" style="margin-bottom: 10px;">Selecciona un filtro para aplicarlo a la imagen.</p>
+                <div id="filter-grid" class="filter-grid">
+                    <div class="filter-option active" data-filter="filter-none">Ninguno</div>
+                    <div class="filter-option" data-filter="filter-clarendon">Clarendon</div>
+                    <div class="filter-option" data-filter="filter-moon">Moon (B/N)</div>
+                    <div class="filter-option" data-filter="filter-lark">Lark</div>
+                    <div class="filter-option" data-filter="filter-cyberpunk">Cyberpunk</div>
+                    <div class="filter-option" data-filter="filter-neon">Neón</div>
+                    <div class="filter-option" data-filter="filter-golden-hour">Golden Hour</div>
+                    <div class="filter-option" data-filter="filter-noir">Noir</div>
+                    <div class="filter-option" data-filter="filter-vaporwave">Vaporwave</div>
+                    <div class="filter-option" data-filter="filter-cinematic-cool">Cine Frío</div>
+                    <div class="filter-option" data-filter="filter-vintage">Vintage</div>
+                    <div class="filter-option" data-filter="filter-cross-process">Cross-Process</div>
+                    <div class="filter-option" data-filter="filter-sepia-strong">Sepia Fuerte</div>
+                    <div class="filter-option" data-filter="filter-grayscale-strong">Gris Fuerte</div>
+                    <div class="filter-option" data-filter="filter-invert">Invertir</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="customization-panel" class="panel customization-panel">
+            <h2 class="panel-title"><i class="fas fa-tools"></i> Personalización Extrema</h2>
+
+            <div class="control-group">
+                <h3 class="control-label" style="font-size: 1.1rem; color: var(--success);"><i class="fas fa-image"></i> Ajustes de Imagen</h3>
+                <label class="control-label" style="font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-brush"></i> Brillo</label>
+                <div class="slider-container">
+                    <input type="range" id="brightness-slider" min="0.5" max="2" value="1" step="0.05" class="control-input">
+                    <span class="value-display" id="brightness-value">1.00</span>
+                </div>
+                
+                <label class="control-label" style="font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-adjust"></i> Contraste</label>
+                <div class="slider-container">
+                    <input type="range" id="contrast-slider" min="0.5" max="2" value="1" step="0.05" class="control-input">
+                    <span class="value-display" id="contrast-value">1.00</span>
+                </div>
+                
+                <label class="control-label" style="font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-water"></i> Saturación</label>
+                <div class="slider-container">
+                    <input type="range" id="saturate-slider" min="0" max="3" value="1" step="0.1" class="control-input">
+                    <span class="value-display" id="saturate-value">1.0</span>
+                </div>
+                
+                <label class="control-label" style="font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-dot-circle"></i> Desenfoque</label>
+                <div class="slider-container">
+                    <input type="range" id="blur-slider" min="0" max="10" value="0" step="0.1" class="control-input">
+                    <span class="value-display" id="blur-value">0px</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <h3 class="control-label" style="font-size: 1.1rem; color: var(--accent);"><i class="fas fa-font"></i> Texto Principal</h3>
+                
+                <label class="control-label" style="font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-align-left"></i> Contenido</label>
+                <input type="text" id="text-input" value="¡Tu Imagen Brillante!" class="control-input" placeholder="Escribe tu texto">
+
+                <label class="control-label" style="font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-palette"></i> Color de Texto</label>
+                <input type="color" id="text-color-input" value="#3a0ca3" class="control-input" style="height: 44px; padding: 5px;">
+
+                <label class="control-label" style="font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-heading"></i> Tamaño de Texto</label>
+                <div class="slider-container">
+                    <input type="range" id="text-size-slider" min="1" max="10" value="2" step="0.1" class="control-input">
+                    <span class="value-display" id="text-size-value">2.0rem</span>
+                </div>
+                
+                <label class="control-label" style="font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-feather-alt"></i> Efectos de Texto</label>
+                <div id="text-effect-options" class="text-effects">
+                    <div class="text-effect active" data-effect="text-shadow">Sombra</div>
+                    <div class="text-effect" data-effect="text-none">Ninguno</div>
+                    <div class="text-effect" data-effect="text-glow">Resplandor</div>
+                    <div class="text-effect" data-effect="text-outline">Contorno</div>
+                    <div class="text-effect" data-effect="text-gradient">Gradiente</div>
+                    <div class="text-effect" data-effect="text-3d">3D</div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <h3 class="control-label" style="font-size: 1.1rem; color: var(--primary);"><i class="fas fa-crop-alt"></i> Marco Personalizado (Borde)</h3>
+                
+                <label class="control-label" style="font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-paint-roller"></i> Color del Borde</label>
+                <input type="color" id="border-color-input" value="#4361ee" class="control-input">
+                
+                <label class="control-label" style="font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-ruler-horizontal"></i> Ancho del Borde (px)</label>
+                <div class="slider-container">
+                    <input type="range" id="border-width-slider" min="0" max="50" value="3" step="1" class="control-input">
+                    <span class="value-display" id="border-width-value">3px</span>
+                </div>
+                
+                <label class="control-label" style="font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-compress-alt"></i> Radio de Borde (px)</label>
+                <div class="slider-container">
+                    <input type="range" id="border-radius-slider" min="0" max="100" value="20" step="1" class="control-input">
+                    <span class="value-display" id="border-radius-value">20px</span>
+                </div>
+                
+                <label class="control-label" style="font-size: 0.9rem; margin-top: 10px;"><i class="fas fa-grip-lines"></i> Estilo de Borde</label>
+                <select id="border-style-select" class="control-input">
+                    <option value="solid">Sólido</option>
+                    <option value="dashed">Discontinuo</option>
+                    <option value="dotted">Punteado</option>
+                    <option value="double">Doble</option>
+                    <option value="groove">Ranal</option>
+                    <option value="ridge">Cresta</option>
+                    <option value="inset">Interior</option>
+                    <option value="outset">Exterior</option>
+                    <option value="none">Ninguno</option>
+                </select>
+            </div>
+
+            <div class="export-options">
+                <h3 class="export-title"><i class="fas fa-download"></i> Exportar</h3>
+                
+                <div class="format-options" id="export-format-options">
+                    <div class="format-option active" data-format="png">PNG (Alta Calidad)</div>
+                    <div class="format-option" data-format="jpeg">JPEG (Web)</div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" id="download-btn"><i class="fas fa-save"></i> Descargar Imagen</button>
+                    <button class="btn btn-neutral" id="reset-btn"><i class="fas fa-redo"></i> Restablecer</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const previewImageContainer = document.getElementById('preview-image-container');
+        const previewImage = document.getElementById('preview-image');
+        const previewTitle = document.getElementById('preview-title');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const root = document.documentElement;
+
+        // --- Constantes de Contenido Masivo ---
+        
+        // 25 Fondos AI/Textura (expandidos)
+        const AI_TEXTURE_BACKGROUNDS = [
+            { name: "Fondo Líquido", cssClass: "bg-liquido" },
+            { name: "Ruido Digital", cssClass: "bg-ruido" },
+            { name: "Textura Bokeh", cssClass: "bg-bokeh" },
+            { name: "Tejido de Luz", cssClass: "bg-tejido" },
+            { name: "Flujo de Datos", cssClass: "bg-flujo-datos" },
+            { name: "Espejo Roto", cssClass: "bg-espejo-roto" },
+            { name: "Plasma Caliente", cssClass: "bg-plasma" },
+            { name: "Holograma", cssClass: "bg-holograma" },
+            { name: "Velvet Azul", cssClass: "bg-velvet-azul" },
+            { name: "Deep Space", cssClass: "bg-deep-space" },
+            { name: "Mármol Negro", cssClass: "bg-marmol-negro" },
+            { name: "Textura Madera", cssClass: "bg-madera" },
+            { name: "Papel Arrugado", cssClass: "bg-papel-arrugado" },
+            { name: "Pared Ladrillo", cssClass: "bg-pared-ladrillo" },
+            { name: "Agua Turquesa", cssClass: "bg-agua-turquesa" },
+            { name: "Bokeh Suave", cssClass: "bg-bokeh-suave" },
+            { name: "Hojas Sombra", cssClass: "bg-hojas-sombra" },
+            { name: "Humo Elegante", cssClass: "bg-humo-elegante" },
+            { name: "Patrón Diamante", cssClass: "bg-patron-diamante" },
+            { name: "Cielo Noche", cssClass: "bg-cielo-noche" },
+            { name: "Vapor Gris", cssClass: "bg-vapor-gris" },
+            { name: "Geometría Lineal", cssClass: "bg-geometria-lineal" },
+            { name: "Textura Arena", cssClass: "bg-arena" },
+            { name: "Patrón Puntos", cssClass: "bg-patron-puntos" },
+            { name: "Capa Abstracta", cssClass: "bg-capa-abstracta" },
+        ];
+
+        // 50 Colores y Gradientes NO IA (Expansión)
+        const NON_AI_COLORS = [
+            { name: "Cielo Azul", css: "linear-gradient(135deg, #1c3643, #294066)" },
+            { name: "Puesta Sol", css: "linear-gradient(45deg, #f76c6c, #e8a9a9)" },
+            { name: "Neón Rosa", css: "radial-gradient(circle, #f77062, #fe5196)" },
+            { name: "Bosque Verde", css: "linear-gradient(180deg, #385b4d, #2f4c3a)" },
+            { name: "Gris Suave", css: "#e0e0e0" },
+            { name: "Carbón Oscuro", css: "#333333" },
+            { name: "Mar Profundo", css: "radial-gradient(circle, #005aa7, #fffde4)" },
+            { name: "Menta", css: "#98ff98" },
+            { name: "Coral", css: "#ff7f50" },
+            { name: "Lavanda", css: "#e6e6fa" },
+            { name: "Oro Plano", css: "linear-gradient(to right, #e7c27a, #997e3d)" },
+            { name: "Plata Metal", css: "linear-gradient(to bottom, #d7d7d7, #b0b0b0)" },
+            { name: "Rojo Fuego", css: "radial-gradient(circle, #ff5f6d, #ffc371)" },
+            { name: "Violeta", css: "#8a2be2" },
+            { name: "Aqua", css: "#00ffff" },
+            { name: "Chocolate", css: "#d2691e" },
+            { name: "Verde Lima", css: "#32cd32" },
+            { name: "Beige", css: "#f5f5dc" },
+            { name: "Índigo", css: "#4b0082" },
+            { name: "Oliva", css: "#808000" },
+            { name: "Rubí", css: "#e0115f" },
+            { name: "Zafiro", css: "#0f52ba" },
+            { name: "Esmeralda", css: "#50c878" },
+            { name: "Ámbar", css: "#ffbf00" },
+            { name: "Turquesa", css: "#40e0d0" },
+            { name: "Rosa Chicle", css: "#ffb6c1" },
+            { name: "Azul Medianoche", css: "#191970" },
+            { name: "Amarillo Canario", css: "#ffef00" },
+            { name: "Café Oscuro", css: "#6f4e37" },
+            { name: "Púrpura Profundo", css: "#3c1053" },
+            { name: "Gradiente Frío", css: "linear-gradient(45deg, #a1c4fd, #c2e9fb)" },
+            { name: "Gradiente Cálido", css: "linear-gradient(45deg, #f093fb, #f5576c)" },
+            { name: "Gradiente Abstracto", css: "linear-gradient(90deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%)" },
+            { name: "Gradiente Metálico", css: "linear-gradient(to right, #434343 0%, black 100%)" },
+            { name: "Gradiente Oceánico", css: "linear-gradient(to right, #4facfe 0%, #00f2fe 100%)" },
+            { name: "Gradiente Púrpura-Azul", css: "linear-gradient(to top, #30cfd0 0%, #330867 100%)" },
+            { name: "Gradiente Naranja-Rojo", css: "linear-gradient(to top, #ff5f6d 0%, #ffc371 100%)" },
+            { name: "Llama Solar", css: "radial-gradient(circle, #ff8c00, #e94e77)" },
+            { name: "Verde Militar", css: "#556b2f" },
+            { name: "Piel Pálida", css: "#faebd7" },
+            { name: "Rojo Carmesí", css: "#dc143c" },
+            { name: "Oro Rosa", css: "linear-gradient(135deg, #ffb5b5, #cc9999)" },
+            { name: "Azul Eléctrico", css: "#7df9ff" },
+            { name: "Marrón Claro", css: "#cd853f" },
+            { name: "Gradiente Arcoíris", css: "linear-gradient(90deg, #f00, #ff7f00, #ff0, #0f0, #0ff, #00f, #8b00ff)" },
+            { name: "Gris Cemento", css: "#95a5a6" },
+            { name: "Turquesa Claro", css: "#afeeee" },
+            { name: "Amarillo Mostaza", css: "#ffdb58" },
+            { name: "Borgoña", css: "#800020" },
+            // Nuevos fondos con colores
+            { name: "Azul Claro", css: "#e6f7ff" },
+            { name: "Verde Menta", css: "#e8f5e9" },
+            { name: "Rosa Suave", css: "#fce4ec" },
+            { name: "Amarillo Claro", css: "#fffde7" },
+            { name: "Lila Suave", css: "#f3e5f5" },
+            { name: "Naranja Claro", css: "#fff3e0" },
+            { name: "Turquesa Claro", css: "#e0f2f1" },
+            { name: "Gris Claro", css: "#f5f5f5" },
+            { name: "Azul Profundo", css: "#0d47a1" },
+            { name: "Rojo Pasión", css: "#b71c1c" },
+            { name: "Verde Oscuro", css: "#1b5e20" },
+            { name: "Morado Intenso", css: "#4a148c" },
+            { name: "Dorado", css: "#ffd700" },
+            { name: "Plateado", css: "#c0c0c0" },
+            { name: "Bronce", css: "#cd7f32" },
+            { name: "Pastel Arcoiris", css: "linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #a1c4fd)" },
+            { name: "Degradado Ocaso", css: "linear-gradient(to right, #ff7e5f, #feb47b)" },
+            { name: "Degradado Oceano", css: "linear-gradient(to right, #4facfe, #00f2fe)" },
+            { name: "Degradado Bosque", css: "linear-gradient(to right, #0ba360, #3cba92)" },
+            { name: "Degradado Atardecer", css: "linear-gradient(to right, #ff6b6b, #ffa726)" },
+            { name: "Degradado Galaxia", css: "linear-gradient(to right, #3a1c71, #d76d77, #ffaf7b)" },
+        ];
+
+        // 10 Fotos de Galería de Muestra (Simulando 'fotos.jpg')
+        const USER_GALLERY_IMAGES = [
+            { name: "Paisaje 1", url: "https://picsum.photos/500/500?random=101" },
+            { name: "Retrato Urbano", url: "https://picsum.photos/500/500?random=102" },
+            { name: "Naturaleza Muerta", url: "https://picsum.photos/500/500?random=103" },
+            { name: "Abstracto Geométrico", url: "https://picsum.photos/500/500?random=104" },
+            { name: "Animal Salvaje", url: "https://picsum.photos/500/500?random=105" },
+            { name: "Comida Gourmet", url: "https://picsum.photos/500/500?random=106" },
+            { name: "Blanco y Negro", url: "https://picsum.photos/500/500?random=107" },
+            { name: "Calle Nocturna", url: "https://picsum.photos/500/500?random=108" },
+            { name: "Detalle de Planta", url: "https://picsum.photos/500/500?random=109" },
+            { name: "Textura de Metal", url: "https://picsum.photos/500/500?random=110" },
+        ];
+
+
+        // --- Funciones de Renderizado de Galerías ---
+
+        function renderAITextureBackgrounds() {
+            const grid = document.getElementById('ai-backgrounds-grid');
+            grid.innerHTML = '';
+            AI_TEXTURE_BACKGROUNDS.forEach(bg => {
+                const div = document.createElement('div');
+                div.className = `background-option bg-image ${bg.cssClass}`;
+                div.dataset.bgType = 'css-class';
+                div.dataset.bgValue = bg.cssClass;
+                div.title = bg.name;
+                div.innerHTML = `<span class="background-option-text">${bg.name}</span>`;
+                grid.appendChild(div);
+            });
+        }
+
+        function renderNonAIColors() {
+            const grid = document.getElementById('non-ai-colors-grid');
+            grid.innerHTML = '';
+            NON_AI_COLORS.forEach(color => {
+                const div = document.createElement('div');
+                div.className = `background-option`;
+                div.dataset.bgType = color.css.includes('gradient') || color.css.includes('radial') ? 'gradient' : 'color';
+                div.dataset.bgValue = color.css;
+                div.title = color.name;
+                div.style.background = color.css;
+                div.innerHTML = `<span class="background-option-text" style="color: ${color.css.includes('#333333') || color.css.includes('#191970') || color.css.includes('#000') || color.css.includes('#1c1c1c') ? 'white' : 'black'}; background: rgba(255, 255, 255, 0.4);">${color.name}</span>`;
+                grid.appendChild(div);
+            });
+        }
+
+        function renderUserGallery() {
+            const grid = document.getElementById('user-gallery-grid');
+            grid.innerHTML = '';
+            USER_GALLERY_IMAGES.forEach((image, index) => {
+                const img = document.createElement('img');
+                img.className = 'gallery-item';
+                img.src = image.url;
+                img.alt = image.name;
+                img.dataset.index = index;
+                grid.appendChild(img);
+            });
+            // Seleccionar la primera imagen como activa si no hay ninguna
+            if (grid.children.length > 0) {
+                grid.children[0].classList.add('active');
+            }
+        }
+        
+        // Inicializar las galerías
+        renderAITextureBackgrounds();
+        renderNonAIColors();
+        renderUserGallery();
+
+        // --- Lógica Principal del Editor ---
+
+        // 1. Selector de Pestañas
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('tab-content-' + this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // 2. Selección de Imagen de Galería
+        document.getElementById('user-gallery-grid').addEventListener('click', function(e) {
+            if (e.target.classList.contains('gallery-item')) {
+                document.querySelectorAll('#user-gallery-grid .gallery-item').forEach(item => item.classList.remove('active'));
+                e.target.classList.add('active');
+                previewImage.src = e.target.src;
+                // Reiniciar filtros de fondo
+                previewImageContainer.className = 'preview-image-container';
+                root.style.setProperty('--background-preview', 'white');
+                document.querySelectorAll('.background-option').forEach(opt => opt.classList.remove('active'));
+            }
+        });
+
+        // 3. Subir imagen personalizada
+        document.getElementById('upload-btn').addEventListener('click', () => {
+            document.getElementById('file-input').click();
+        });
+
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    // Deseleccionar cualquier imagen de la galería
+                    document.querySelectorAll('#user-gallery-grid .gallery-item').forEach(item => item.classList.remove('active'));
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // 4. Aplicar Fondo
+        document.getElementById('ai-backgrounds-grid').addEventListener('click', applyBackground);
+        document.getElementById('non-ai-colors-grid').addEventListener('click', applyBackground);
+
+        function applyBackground(e) {
+            let target = e.target.closest('.background-option');
+            if (!target) return;
+            
+            document.querySelectorAll('.background-option').forEach(opt => opt.classList.remove('active'));
+            target.classList.add('active');
+            
+            // Eliminar clases de fondo y aplicar el nuevo estilo
+            previewImageContainer.className = 'preview-image-container';
+            root.style.setProperty('--background-preview', 'white'); // Reset CSS variable for custom colors/gradients
+            
+            if (target.dataset.bgType === 'css-class') {
+                previewImageContainer.classList.add(target.dataset.bgValue);
+                root.style.setProperty('--background-preview', 'initial');
+            } else if (target.dataset.bgType === 'color' || target.dataset.bgType === 'gradient') {
+                root.style.setProperty('--background-preview', target.dataset.bgValue);
+            }
+        }
+        
+        // 5. Controles de Ajuste de Imagen (Brillo, Contraste, Saturación, Desenfoque)
+        const updateImageFilters = () => {
+            const brightness = document.getElementById('brightness-slider').value;
+            const contrast = document.getElementById('contrast-slider').value;
+            const saturate = document.getElementById('saturate-slider').value;
+            const blur = document.getElementById('blur-slider').value;
+            
+            document.getElementById('brightness-value').textContent = parseFloat(brightness).toFixed(2);
+            document.getElementById('contrast-value').textContent = parseFloat(contrast).toFixed(2);
+            document.getElementById('saturate-value').textContent = parseFloat(saturate).toFixed(1);
+            document.getElementById('blur-value').textContent = blur + 'px';
+
+            const currentFilterClass = previewImage.className.split(' ').find(cls => cls.startsWith('filter-'));
+            const customFilter = `brightness(${brightness}) contrast(${contrast}) saturate(${saturate}) blur(${blur}px)`;
+            
+            // Aplicar el filtro de clase primero, y luego los ajustes personalizados
+            previewImage.style.filter = currentFilterClass === 'filter-none' || !currentFilterClass ? customFilter : `var(--${currentFilterClass}) ${customFilter}`;
+        };
+
+        ['brightness-slider', 'contrast-slider', 'saturate-slider', 'blur-slider'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateImageFilters);
+        });
+
+        // 6. Controles de Filtros Prediseñados
+        document.getElementById('filter-grid').addEventListener('click', (e) => {
+            const target = e.target.closest('.filter-option');
+            if (!target) return;
+
+            document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('active'));
+            target.classList.add('active');
+
+            const newFilterClass = target.dataset.filter;
+            // Remover filtro anterior
+            previewImage.className = previewImage.className.split(' ').filter(cls => !cls.startsWith('filter-')).join(' ');
+            // Aplicar nuevo filtro
+            previewImage.classList.add(newFilterClass);
+            
+            // Reaplicar ajustes manuales para que el filtro combine con brillo/contraste/saturación
+            updateImageFilters();
+        });
+
+
+        // 7. Controles de Texto
+        document.getElementById('text-input').addEventListener('input', (e) => {
+            previewTitle.textContent = e.target.value;
+        });
+
+        document.getElementById('text-color-input').addEventListener('input', (e) => {
+            previewTitle.style.color = e.target.value;
+            // Si tiene gradiente, restablecer el color para que se aplique el gradiente (propiedad CSS es la clave)
+            if (previewTitle.classList.contains('text-gradient')) {
+                previewTitle.style.color = 'initial';
+                previewTitle.style.setProperty('--primary', e.target.value); // Usar el color base para el gradiente
+            }
+        });
+        
+        document.getElementById('text-size-slider').addEventListener('input', (e) => {
+            const size = e.target.value + 'rem';
+            previewTitle.style.fontSize = size;
+            document.getElementById('text-size-value').textContent = size;
+        });
+
+        document.getElementById('text-effect-options').addEventListener('click', (e) => {
+            const target = e.target.closest('.text-effect');
+            if (!target) return;
+
+            document.querySelectorAll('.text-effect').forEach(opt => opt.classList.remove('active'));
+            target.classList.add('active');
+
+            // Remover todas las clases de efecto y aplicar la nueva
+            previewTitle.className = previewTitle.className.split(' ').filter(cls => !cls.startsWith('text-')).join(' ');
+            
+            const newEffectClass = target.dataset.effect;
+            if (newEffectClass !== 'text-none') {
+                previewTitle.classList.add(newEffectClass);
+            }
+            
+            // Asegurar que el color se aplique correctamente al cambiar de gradiente
+            if (newEffectClass === 'text-gradient') {
+                // Aplicar el color base del control de color a la variable CSS del gradiente
+                root.style.setProperty('--primary', document.getElementById('text-color-input').value);
+                previewTitle.style.color = 'initial'; // Esencial para que el gradiente CSS funcione
+            } else {
+                 previewTitle.style.color = document.getElementById('text-color-input').value; // Restablecer el color sólido
+            }
+        });
+        
+        // 8. Controles de Marco Personalizado (Borde)
+        
+        const updateBorderCustomization = () => {
+            const color = document.getElementById('border-color-input').value;
+            const width = document.getElementById('border-width-slider').value + 'px';
+            const radius = document.getElementById('border-radius-slider').value + 'px';
+            const style = document.getElementById('border-style-select').value;
+
+            // Actualizar variables CSS para aplicación dinámica
+            root.style.setProperty('--border-color', color);
+            root.style.setProperty('--border-width', width);
+            root.style.setProperty('--border-radius', radius);
+            root.style.setProperty('--border-style', style);
+
+            document.getElementById('border-width-value').textContent = width;
+            document.getElementById('border-radius-value').textContent = radius;
+        };
+
+        ['border-color-input', 'border-width-slider', 'border-radius-slider', 'border-style-select'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateBorderCustomization);
+        });
+
+        // 9. Modo Oscuro
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('#theme-toggle i');
+            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
+        });
+
+        // 10. Funcionalidad de Descarga
+        let exportFormat = 'png';
+        document.getElementById('export-format-options').addEventListener('click', (e) => {
+            const target = e.target.closest('.format-option');
+            if (!target) return;
+            document.querySelectorAll('.format-option').forEach(opt => opt.classList.remove('active'));
+            target.classList.add('active');
+            exportFormat = target.dataset.format;
+        });
+        
+        document.getElementById('download-btn').addEventListener('click', async () => {
+            loadingSpinner.classList.add('active');
+            
+            // Esperar un poco para que se apliquen todos los estilos
+            await new Promise(resolve => setTimeout(resolve, 50));
+            
+            try {
+                // Capturar el contenedor de la imagen con el marco y texto
+                const canvas = await html2canvas(previewImageContainer, {
+                    allowTaint: true,
+                    useCORS: true,
+                    // Ignorar la sombra de la carta principal si no queremos un fondo grande
+                    ignoreElements: (element) => element.id === 'loading-spinner'
+                });
+
+                const dataURL = canvas.toDataURL(`image/${exportFormat === 'jpeg' ? 'jpeg' : 'png'}`, exportFormat === 'jpeg' ? 0.9 : 1.0);
+                const a = document.createElement('a');
+                a.href = dataURL;
+                a.download = `imagen-editada-pro.${exportFormat}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+            } catch (error) {
+                console.error("Error al generar la imagen:", error);
+                alert("Hubo un error al generar la imagen. Asegúrate de que las imágenes de origen están permitidas.");
+            } finally {
+                loadingSpinner.classList.remove('active');
+            }
+        });
+
+        // 11. Botón de restablecer
+        document.getElementById('reset-btn').addEventListener('click', () => {
+            // Restablecer todos los controles a sus valores por defecto
+            document.getElementById('brightness-slider').value = 1;
+            document.getElementById('contrast-slider').value = 1;
+            document.getElementById('saturate-slider').value = 1;
+            document.getElementById('blur-slider').value = 0;
+            document.getElementById('text-input').value = "¡Tu Imagen Brillante!";
+            document.getElementById('text-color-input').value = "#3a0ca3";
+            document.getElementById('text-size-slider').value = 2;
+            document.getElementById('border-color-input').value = "#4361ee";
+            document.getElementById('border-width-slider').value = 3;
+            document.getElementById('border-radius-slider').value = 20;
+            document.getElementById('border-style-select').value = "solid";
+            
+            // Restablecer filtros
+            document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('active'));
+            document.querySelector('.filter-option[data-filter="filter-none"]').classList.add('active');
+            
+            // Restablecer efectos de texto
+            document.querySelectorAll('.text-effect').forEach(opt => opt.classList.remove('active'));
+            document.querySelector('.text-effect[data-effect="text-shadow"]').classList.add('active');
+            
+            // Restablecer imagen
+            previewImage.src = "https://picsum.photos/500/500?random=1";
+            previewImage.className = "preview-image filter-none";
+            
+            // Restablecer fondo
+            previewImageContainer.className = "preview-image-container";
+            root.style.setProperty('--background-preview', 'white');
+            document.querySelectorAll('.background-option').forEach(opt => opt.classList.remove('active'));
+            
+            // Aplicar todos los cambios
+            updateImageFilters();
+            updateBorderCustomization();
+            previewTitle.textContent = "¡Tu Imagen Brillante!";
+            previewTitle.style.color = "#3a0ca3";
+            previewTitle.style.fontSize = "2rem";
+            previewTitle.className = "preview-title text-shadow";
+        });
+        
+        // Inicializar filtros manuales
+        updateImageFilters();
+    });
+</script>
+</body>
+</html>
