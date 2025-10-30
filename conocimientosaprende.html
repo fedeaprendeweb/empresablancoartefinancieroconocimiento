@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abogacía - Portal de Módulos</title>
+    <style>
+        /* Variables CSS para consistencia */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #f5f5f5;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* Reset y estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+                border-radius: 10px;
+  max-width: 900px;
+  margin: 90px auto;
+        }
+
+        /* Header y título */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+            padding: 20px 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Contenedor de botones */
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 40px;
+        }
+
+        .module-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 15px;
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--secondary-color);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .module-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            color: var(--secondary-color);
+        }
+
+        .module-button:hover::before {
+            transform: scaleX(1);
+        }
+
+        .module-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--secondary-color);
+        }
+
+        .module-title {
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .button-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .module-button {
+                padding: 20px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .button-container {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Efectos adicionales */
+        .module-button:nth-child(3n) .module-number {
+            color: var(--accent-color);
+        }
+
+        .module-button:nth-child(5n) .module-number {
+            color: var(--success-color);
+        }
+
+        .module-button:nth-child(7n) .module-number {
+            color: var(--warning-color);
+        }
+        /* Solo estilos para el botón "Volver atrás" */
+.back-button {
+  display: inline-block;
+  padding: 10px 18px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid #333;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  user-select: none;
+}
+
+/* Efecto al pasar el ratón */
+.back-button:hover,
+.back-button:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+  text-decoration: none;
+  outline: none;
+}
+
+/* Efecto al hacer clic */
+.back-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1> Aprende del conocimientos </h1>
+        <p class="subtitle"> Aprende ahora, porque el conocimiento es poder. Cuanto más sabes, mejor cuidas tu salud mental y fortaleces tu mentalidad.</p>
+    </header>
+  <a href="principalwebconocimientoaprende.html" class="back-button" aria-label="Volver atrás">Volver atrás</a>
+    <div class="button-container">
+        <a href="abogacia1.html" class="module-button">
+            <span class="module-number">01</span>
+            <span class="module-title"> Cuadro comparativo del derecho proteccion medico</span>
+        </a>
+        <a href="abogacia2.html" class="module-button">
+            <span class="module-number">02</span>
+            <span class="module-title"> 900 leyes normativa y descripccion derecho proteccion al medico</span>
+        </a>
+        <a href="abogacia3.html" class="module-button">
+            <span class="module-number">03</span>
+            <span class="module-title"> derecho de la inteligencia estrategico parte 1 sobre proteccion del medico </span>
+        </a>
+        <a href="abogacia4.html" class="module-button">
+            <span class="module-number">04</span>
+            <span class="module-title">Derecho estrategia de inteligencia parte 2 sobre proteger al medico personal </span>
+        </a>
+        <a href="abogacia5.html" class="module-button">
+            <span class="module-number">05</span>
+            <span class="module-title">  Derecho estrategia de inteligencia parte 3 sobre proteger al medico personal  </span>
+        <a href="abogacia6.html" class="module-button">
+            <span class="module-number">06</span>
+            <span class="module-title"> inteligencia proteccion medica </span>
+        </a>
+        <a href="abogacia7.html" class="module-button">
+            <span class="module-number">07</span>
+            <span class="module-title"> proteccion en medicina medico personal</span>
+        </a>
+        <a href="abogacia8.html" class="module-button">
+            <span class="module-number">08</span>
+            <span class="module-title">  Las víctimas de engaños digitales suelen ser el personal médico, 
+                quienes son afectados por acciones malintencionadas de algunos programadores 
+                y analistas de sistemas. 
+                A continuación, se muestra una lista de ejemplos de estos engaños</span>
+        </a>
+        <a href="cuadrocomparativo1tecnologicodiferentesgrupohack.html" class="module-button">
+            <span class="module-number">09</span>
+            <span class="module-title"> cuadro comparativo diferentes rol grupos</span>
+        </a>
+        <a href="abogacia9.html" class="module-button">
+            <span class="module-number">10</span>
+            <span class="module-title"> Catálogo Completo de Engaños Médicos </span>
+        </a>
+        <a href="cuadrocomparativo2.html" class="module-button">
+            <span class="module-number">11</span>
+            <span class="module-title"> Cuadro Comparativo de Amenazas Cibernéticas </span>
+        </a>
+        <a href="cuadrocomparativo3.html" class="module-button">
+            <span class="module-number">12</span>
+            <span class="module-title"> No tenes que utilizar el sistema operativo kali linux hay esta haciendo algo ilegal(las persona le falta inteligencia emocional)</span>
+        </a>
+        <a href="desarrollo1.html" class="module-button">
+            <span class="module-number">13</span>
+            <span class="module-title">teorico parte 1 </span>
+        </a>
+        <a href="desarrollo2.html" class="module-button">
+            <span class="module-number">14</span>
+            <span class="module-title">teorico  parte 2 </span>
+        </a>
+        <a href="eticadigital.html" class="module-button">
+            <span class="module-number">15</span>
+            <span class="module-title">teorico parte 3 </span>
+        </a>
+        <a href="cuadrocomparativo4.html" class="module-button">
+            <span class="module-number">16</span>
+            <span class="module-title"> cuadro comparativo funciones de derecho en la ciberseguridad</span>
+        </a>
+          <a href="blogderecho.html" class="module-button">
+            <span class="module-number">17</span>
+            <span class="module-title"> diferentes temas como 200 o mas de derecho </span>
+        </a>
+          <a href="cuadrocomprativo5.html" class="module-button">
+            <span class="module-number">18</span>
+            <span class="module-title"> cuadro comparativo sobre Derecho de la Inteligencia Artificial (IA)	Derecho del Metaverso(el mertaverso es mundo virtual) </span>
+        </a>
+             <a href="protegerdigital.html" class="module-button">
+            <span class="module-number">19</span>
+            <span class="module-title">  La única protección que tienes: no proteges con la verificación en dos pasos.</span>
+        </a>
+             <a href="calculosprincipalderecho.html" class="module-button">
+            <span class="module-number">20</span>
+            <span class="module-title"> Calculos matematicos de abogacia parte 1</span>
+        </a>
+               <a href="calculos2abogacia.html" class="module-button">
+            <span class="module-number">21</span>
+            <span class="module-title"> 50 herramientas de cálculo matemático aplicadas a la abogacía Parte 2 </span>
+        </a>
+               <a href="calculoactivopasivo.html" class="module-button">
+            <span class="module-number">22</span>
+            <span class="module-title"> Contablidad parte 1(activo, pasivo y otras explicacion importante) </span>
+        </a>     <a href="contablidadcalculocosto.html" class="module-button">
+            <span class="module-number">23</span>
+            <span class="module-title"> contablidad parte 2 (calculos costo) </span>
+        </a>
+   <a href="ejemplocontable.html" class="module-button">
+            <span class="module-number">24</span>
+            <span class="module-title"> ejemplos de contablidad </span>
+        </a>
+         <a href="psicologiadigital.html" class="module-button">
+            <span class="module-number">25</span>
+            <span class="module-title"> Psicologia digitales</span>
+        </a>
+         <a href="celularnotebook.html" class="module-button">
+            <span class="module-number">26</span>
+            <span class="module-title"> Tecnologia basico(componentes) </span>
+        </a>
+           <a href="pogramacionparte1.html" class="module-button">
+            <span class="module-number">27</span>
+            <span class="module-title"> Pogramacion parte 1(teorico y practica) </span>
+             <a href="pogramacionparte2.html" class="module-button">
+            <span class="module-number">28</span>
+            <span class="module-title"> Pogramacion parte 2(teorico y practica) </span>
+            
+        </a>
+   <a href="listadocarreraparte1.html" class="module-button">
+            <span class="module-number">29</span>
+            <span class="module-title"> Guia de lista de carrera parte 1</span>
+            
+        </a>
+   <a href="listadocarerraparte2.html" class="module-button">
+            <span class="module-number">30</span>
+            <span class="module-title"> Guia de lista de carrera parte 2</span>
+            
+        </a>
+   <a href="legalilgealparte1.html" class="module-button">
+            <span class="module-number">31</span>
+            <span class="module-title"> Sobre empresa parte 1</span>
+            
+        </a>
+  <a href="legalilegalparte2.html" class="module-button">
+            <span class="module-number">32</span>
+            <span class="module-title"> Sobre empresa parte 2</span>
+            
+        </a>
+<a href="https://www.youtube.com/watch?v=C9F7DLtr1Bo" class="module-button" target="_blank">
+    <span class="module-number">33</span>
+    <span class="module-title"> Deja Que Hablen Los Demás ¦ Gratitud, Frases, Reflexiones, Agradecimiento, Reflexión </span>
+</a>
+<a href="https://www.youtube.com/watch?v=65mJpfKZRKk" class="module-button" target="_blank">
+    <span class="module-number">34</span>
+    <span class="module-title">Cómo gestionar y responder a chismes sobre ti</span>
+</a>
+<a href="https://www.youtube.com/watch?v=4O4ZfwhHVx8" class="module-button" target="_blank">
+    <span class="module-number">35</span>
+    <span class="module-title"> El hábito de hablar mal de los demás y cotillear</span>
+</a>
+<a href="https://www.youtube.com/watch?v=p0qZjGuEwDA" class="module-button" target="_blank">
+    <span class="module-number">36</span>
+    <span class="module-title">Video motivación para estudiantes </span>
+</a>
+<a href=" https://www.youtube.com/watch?v=W_yM7OkmHgM " class="module-button" target="_blank">
+    <span class="module-number">37</span>
+    <span class="module-title">MIRA ESTE VIDEO CADA MAÑANA - El mejor discurso motivacional de la mañana 2023  </span>
+</a>
+<a href="https://www.youtube.com/watch?v=rVAQBnSogso" class="module-button" target="_blank">
+    <span class="module-number">38</span>
+    <span class="module-title"> 
+QUERIDO ESTUDIANTE | LA MEJOR Motivación para ESTUDIAR y EXÁMENES </span>
+</a>
+
+
+<a href="https://www.youtube.com/watch?v=Iw_uqK-Gb8g" class="module-button" target="_blank">
+    <span class="module-number">39</span>
+    <span class="module-title"> Fueron Rechazados y Se Hicieron Millonarios | La Historia de Google </span>
+</a>
+<a href="https://www.youtube.com/watch?v=JHRNCiQ0oiA" class="module-button" target="_blank">
+    <span class="module-number">40</span>
+    <span class="module-title">La VERDADERA Historia de Mark Zuckerberg, Creador de FACEBOOK   </span>
+</a>
+<a href="https://www.youtube.com/watch?v=7Utx3Ny_I0s" class="module-button" target="_blank">
+    <span class="module-number">41</span>
+    <span class="module-title">La cia espia a argentina </span>
+</a>
+<a href="https://www.youtube.com/watch?v=7XRtB4v8fWs" class="module-button" target="_blank">
+    <span class="module-number">42</span>
+    <span class="module-title">La CIA espia a través de televisores </span>
+</a>
+<a href="https://www.youtube.com/watch?v=brkXzwnzrqs " class="module-button" target="_blank">
+    <span class="module-number">43 </span>
+    <span class="module-title"> La cia fbi e internacional policial con la empresa encubierto</span>
+</a>
+<a href="https://www.youtube.com/watch?v=wHkj1qLUtfk" class="module-button" target="_blank">
+    <span class="module-number">44</span>
+    <span class="module-title">Uso correcto de las redes sociales	 </span>
+</a>
+<a href="https://www.youtube.com/watch?v=PgAGK7_zocw" class="module-button" target="_blank">
+    <span class="module-number">45 </span>
+    <span class="module-title">ALÉJATE DE TODOS LUCHA EN SILENCIO 🤫 SORPRÉNDELOS | Una Entrevista Reveladora con MARK ZUCKERBERG</span>
+</a>
+
+<a href="https://www.youtube.com/watch?v=ZQgXyiozmYY" class="module-button" target="_blank">
+    <span class="module-number">46</span>
+    <span class="module-title"> Capitacion de modelo negocio parte 1</span>
+</a>
+<a href="https://www.youtube.com/watch?v=alvt8dsoefQ" class="module-button" target="_blank">
+    <span class="module-number"> 47</span>
+    <span class="module-title"> Los tipos de empresas que hay</span>
+</a>
+<a href="https://www.youtube.com/watch?v=v_FxjbhCzSM" class="module-button" target="_blank">
+    <span class="module-number">48 </span>
+    <span class="module-title">¿QUÉ ES UNA EMPRESA? 🤷‍♀️ 👉 DEFINICIÓN, FUNCIONES, OBJETIVOS Y ELEMENTOS DE UNA EMRPESA </span>
+</a>
+<a href="https://www.youtube.com/watch?v=qxiejpXeE-A" class="module-button" target="_blank">
+    <span class="module-number">49 </span>
+    <span class="module-title">Economía | ¿Qué es y por qué es tan importante entenderla?  </span>
+</a>
+<a href="https://www.youtube.com/watch?v=Devh0g4VfVo" class="module-button" target="_blank">
+    <span class="module-number">50</span>
+    <span class="module-title">Tipos de Organizaciones Sociales</span>
+</a>
+<a href="https://www.youtube.com/watch?v=pvUL0J1jMbE" class="module-button" target="_blank">
+    <span class="module-number">51 </span>
+    <span class="module-title">Vídeo motivacional para emprendedores</span>
+</a>
+ <a href="menoresedad.html" class="module-button">
+            <span class="module-number">52</span>
+            <span class="module-title"> Sobre adulta mujeres utiliza al menor edad</span>
+            
+        </a>
+
+    </div>
+</body>
+</html>
