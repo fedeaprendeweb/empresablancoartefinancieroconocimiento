@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protección Personal - Reflexión y Concientización</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --gold: #f1c40f;
+            --purple: #9b59b6;
+            --gradient: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #e74c3c 100%);
+            --philosophy-bg: linear-gradient(135deg, #1a2a3a 0%, #2c3e50 100%);
+            --awareness-bg: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.9) 0%, rgba(236, 240, 241, 0.9) 90%);
+                border-radius: 10px;
+  max-width: 900px;
+  margin: 90px auto;
+        }
+        
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><circle cx="50" cy="50" r="40" stroke="white" stroke-width="2" fill="none" /></svg>');
+            background-size: 50px;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(231, 76, 60, 0.05) 100%);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 2rem 0;
+            gap: 1.5rem;
+        }
+        
+        .step {
+            flex: 0 0 48%;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient);
+        }
+        
+        .step:hover {
+            transform: translateY(-5px);
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin: 2rem 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 15px;
+        }
+        
+        .calculator {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #fff 0%, #f9fafb 100%);
+        }
+        
+        .calculator input, .calculator button {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .calculator input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.2);
+        }
+        
+        .calculator button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .calculator button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result.success {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.15) 0%, rgba(39, 174, 96, 0.05) 100%);
+            border-left: 4px solid var(--success);
+            display: block;
+        }
+        
+        .result.warning {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.15) 0%, rgba(231, 76, 60, 0.05) 100%);
+            border-left: 4px solid var(--accent);
+            display: block;
+        }
+        
+        .message-section {
+            padding: 3rem 0;
+            margin: 3rem 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .philosophy-section {
+            background: var(--philosophy-bg);
+            color: white;
+        }
+        
+        .awareness-section {
+            background: var(--awareness-bg);
+            color: white;
+        }
+        
+        .message-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+        
+        .message-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .philosophy-icon {
+            color: var(--gold);
+        }
+        
+        .awareness-icon {
+            color: var(--light);
+        }
+        
+        .message-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            font-style: italic;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--gold);
+            color: var(--dark);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin: 0.5rem;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background: #f39c12;
+        }
+        
+        .awareness-btn {
+            background: var(--light);
+            color: var(--purple);
+        }
+        
+        .awareness-btn:hover {
+            background: #bdc3c7;
+        }
+        
+        .comments-section {
+            margin: 3rem 0;
+        }
+        
+        .comment {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .comment-text {
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a2a3a 100%);
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            transform: translateY(-5px);
+        }
+        
+        @media (max-width: 768px) {
+            .step {
+                flex: 0 0 100%;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .stat-item {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .message-text {
+                font-size: 1.1rem;
+            }
+        }
+        
+        .floating-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--gradient);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .floating-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+            vertical-align: super;
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--secondary);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .share-btn:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+        }
+        
+        .facebook-link {
+            color: var(--light);
+            text-decoration: none;
+            border-bottom: 1px dashed var(--light);
+            transition: all 0.3s ease;
+        }
+        
+        .facebook-link:hover {
+            color: var(--gold);
+            border-bottom: 1px solid var(--gold);
+        }
+
+       .btn-siguiente {
+      background: linear-gradient(45deg, #ff5722, #ff9800); /* colores llamativos */
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-siguiente:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+    } 
+    /* Solo estilos para el botón "Volver atrás" */
+.back-button {
+  display: inline-block;
+  padding: 10px 18px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid #333;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  user-select: none;
+}
+
+/* Efecto al pasar el ratón */
+.back-button:hover,
+.back-button:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+  text-decoration: none;
+  outline: none;
+}
+
+/* Efecto al hacer clic */
+.back-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+    </style>
+</head>
+<body>
+    <header>
+     
+            <h1>Protección Personal Digital <span class="badge">TOP</span></h1>
+            <p class="subtitle">Por qué y cómo cambiar tu número celular cada 10 años</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <i class="fas fa-eye"></i> Más de 5 millones de visitas
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-comment"></i> 25,000+ comentarios positivos
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-share"></i> Compartido 150,000 veces
+                </div>
+            </div>
+        </div>
+    </header>   <div class="container"> <a href="conocimientosaprende.html" class="back-button" aria-label="Volver atrás">Volver atrás</a>
+    <button class="btn-siguiente" onclick="location.href='analisisredsocial.html'">
+  Investiga y analiza esta cuenta sospechosa, que podría ser falsa en Instagram, Twitter o Facebook.
+Verifica su ubicación para confirmar su autenticidad protege tu seguridad digital Para fines de investigación general, ingresa aquí.
+</button>
+    <div class="container">
+        <section class="card">
+            <h2>¿Por qué cambiar tu número celular periódicamente? <span class="badge">NUEVO</span></h2>
+            <p>En la era digital, nuestro número de teléfono se ha convertido en una pieza clave de nuestra identidad en línea. Cambiarlo periódicamente es una medida de seguridad importante por varias razones:</p>
+            
+            <div class="highlight">
+                <p><strong>Protección contra robos de identidad:</strong> Con el tiempo, tu número puede caer en bases de datos de spam, phishing o incluso en manos de estafadores.</p>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Prevención de acoso:</strong> Si has experimentado acoso telefónico, cambiar tu número puede ser la solución definitiva.</p>
+            </div>
+            
+            <div class="highlight">
+                <p><strong>Actualización de contactos:</strong> Te obliga a revisar y actualizar tu lista de contactos, manteniendo solo las conexiones importantes.</p>
+            </div>
+        </section>
+        
+        <section class="message-section philosophy-section">
+            <div class="message-content">
+                <div class="message-icon philosophy-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <p class="message-text">
+                    "El verdadero poder está en el conocimiento y en la capacidad de ayudar a los demás. La vida debe vivirse plenamente, como hacen muchos jueces y personas que solo buscan riqueza el dinero. Al final, cuando lleguemos al cementerio, ninguna fortuna nos acompañará. Allí solo quedará nuestro cuerpo; nada más estará con nosotros. No estarán los proyectos de ingeniería ni de energía, tampoco el dinero, la tableta, la computadora o el notebook. Todo eso queda atrás. Lo único que realmente permanece es lo que aprendimos, lo que creamos y lo que compartimos con los demás. En el cementerio no llevamos el dinero, la casa, lo material y objetos."
+                </p>
+                <a href="https://www.youtube.com/@tecnodigitalfede" class="download-btn" id="downloadPhilosophy">
+                    <i class="fas fa-download"></i> Descargar Reflexión
+                </a>
+                
+                <div class="share-buttons">
+ 
+                </div>
+            </div>
+        </section>
+        
+        <section class="message-section awareness-section">
+            <div class="message-content">
+                <div class="message-icon awareness-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <p class="message-text">
+                    "No hay que prestar tanta atención a todo lo que se publica en <a href="https://www.facebook.com/delitecno/?locale=es_LA" class="facebook-link" target="_blank">Facebook</a>, especialmente si no se tienen conocimientos previos sobre programación porque no se fueron a una carrera, curso, universidad o instituto de la tecnicatura programación. Muchas personas adultas, tanto hombres como mujeres interpretan mal estas cuestiones por simple desconocimiento. Por eso, en ocasiones hacen denuncias falsas contra sitios web o programadores que en realidad son inocentes y no cometen ningún delito informático. Además, hay personas que, aunque tengan títulos universitarios (profesora de biología química, o profesional de psicología), en vez de analizar con lógica o informarse bien, se dejan llevar por chismes o suposiciones sin fundamento. Esto genera acusaciones injustas y un clima de odio innecesario. Hay que entender que los programadores no solo crean sitios web legales, sino que también manejan conocimientos profundos sobre informática legal: desde algoritmos, pseudocódigos y estructuras web, hasta matemáticas aplicadas y normativas legales. Saben lo que hacen y conocen claramente los límites de la ley."
+                </p>
+                <a href="#" class="download-btn awareness-btn" id="downloadAwareness">
+                    <i class="fas fa-download"></i> Descargar Mensaje
+                </a>
+                
+                <div class="share-buttons">
+
+                </div>
+            </div>
+        </section>
+        
+        <section class="card">
+            <h2>Cómo cambiar tu número celular de forma segura</h2>
+            <div class="steps">
+                <div class="step">
+                    <h3><span class="step-number">1</span> Notifica a contactos importantes</h3>
+                    <p>Informa a familiares, amigos cercanos y colegas de trabajo sobre tu cambio de número antes de realizarlo.</p>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">2</span> Actualiza cuentas en línea</h3>
+                    <p>Cambia el número en bancos, redes sociales, servicios de suscripción y cualquier plataforma que use verificación en dos pasos.</p>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">3</span> Configura el reenvío de llamadas</h3>
+                    <p>Durante la transición, configura el reenvío de llamadas desde tu antiguo número al nuevo por al menos un mes.</p>
+                </div>
+                
+                <div class="step">
+                    <h3><span class="step-number">4</span> Elimina el número antiguo</h3>
+                    <p>Una vez completada la transición, asegúrate de cancelar correctamente tu línea anterior.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="card">
+            <h2>Calculadora: ¿Es hora de cambiar tu número?</h2>
+            <div class="calculator">
+                <p>Ingresa la fecha en la que obtuviste tu número celular actual:</p>
+                <input type="date" id="phoneDate">
+                <button id="calculateBtn">Calcular</button>
+                <div id="result" class="result"></div>
+            </div>
+        </section>
+        
+        <section class="comments-section">
+            <h2>Comentarios de nuestros visitantes</h2>
+            
+            <div class="comment">
+                <div class="comment-header">
+                    <span><i class="fas fa-user"></i> María González</span>
+                    <span><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                </div>
+                <p class="comment-text">"Excelente información. Cambié mi número después de 12 años y me siento mucho más segura. ¡Gracias por este contenido tan valioso!"</p>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-header">
+                    <span><i class="fas fa-user"></i> Carlos Rodríguez</span>
+                    <span><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                </div>
+                <p class="comment-text">"Buena honda, gracias por esto. No sabía que era tan importante cambiar el número periódicamente. La calculadora me ayudó mucho."</p>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-header">
+                    <span><i class="fas fa-user"></i> Ana Martínez</span>
+                    <span><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                </div>
+                <p class="comment-text">"Muy buena información, clara y práctica. Me encantó el diseño de la página y lo fácil que es seguir los pasos. ¡Compartiré con mis amigos!"</p>
+            </div>
+        </section>
+        
+       
+    </div>
+    
+    <footer>
+        <div class="container">
+            
+            <p>Esta página web es solo con fines informativos. Consulta con profesionales de seguridad para medidas específicas.</p>
+            
+          
+        </div>
+    </footer>
+    
+    <div class="floating-button" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+<button class="btn-siguiente" onclick="location.href='analisisredsocial.html '">
+  Investiga y analiza esta cuenta sospechosa, que podría ser falsa en Instagram, Twitter o Facebook.
+Verifica su ubicación para confirmar su autenticidad protege tu seguridad digital Para fines de investigación general, ingresa aquí.
+</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculateBtn');
+            const resultDiv = document.getElementById('result');
+            const scrollToTopBtn = document.getElementById('scrollToTop');
+            
+            // Mensajes
+            const philosophyMessage = "El verdadero poder está en el conocimiento y en la capacidad de ayudar a los demás. La vida debe vivirse plenamente, como hacen muchos jueces y personas que solo buscan riqueza el dinero. Al final, cuando lleguemos al cementerio, ninguna fortuna nos acompañará. Allí solo quedará nuestro cuerpo; nada más estará con nosotros. No estarán los proyectos de ingeniería ni de energía, tampoco el dinero, la tableta, la computadora o el notebook. Todo eso queda atrás. Lo único que realmente permanece es lo que aprendimos, lo que creamos y lo que compartimos con los demás. En el cementerio no llevamos el dinero, la casa, lo material y objetos.";
+            
+            const awarenessMessage = "No hay que prestar tanta atención a todo lo que se publica en Facebook (https://www.facebook.com/delitecno/?locale=es_LA), especialmente si no se tienen conocimientos previos sobre programación porque no se fueron a una carrera, curso, universidad o instituto de la tecnicatura programación. Muchas personas adultas, tanto hombres como mujeres interpretan mal estas cuestiones por simple desconocimiento. Por eso, en ocasiones hacen denuncias falsas contra sitios web o programadores que en realidad son inocentes y no cometen ningún delito informático. Además, hay personas que, aunque tengan títulos universitarios (profesora de biología química, o profesional de psicología), en vez de analizar con lógica o informarse bien, se dejan llevar por chismes o suposiciones sin fundamento. Esto genera acusaciones injustas y un clima de odio innecesario. Hay que entender que los programadores no solo crean sitios web legales, sino que también manejan conocimientos profundos sobre informática legal: desde algoritmos, pseudocódigos y estructuras web, hasta matemáticas aplicadas y normativas legales. Saben lo que hacen y conocen claramente los límites de la ley.";
+            
+            // Funcionalidad de la calculadora
+            calculateBtn.addEventListener('click', function() {
+                const phoneDate = new Date(document.getElementById('phoneDate').value);
+                const today = new Date();
+                
+                if (isNaN(phoneDate.getTime())) {
+                    resultDiv.textContent = "Por favor, ingresa una fecha válida.";
+                    resultDiv.className = "result warning";
+                    return;
+                }
+                
+                const diffTime = Math.abs(today - phoneDate);
+                const diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365));
+                
+                if (diffYears >= 10) {
+                    resultDiv.innerHTML = `<strong>¡Es hora de cambiar tu número!</strong> Has tenido el mismo número por ${diffYears} años. Considera cambiarlo para mejorar tu seguridad digital.`;
+                    resultDiv.className = "result warning";
+                } else {
+                    resultDiv.innerHTML = `<strong>Tu número aún es relativamente nuevo.</strong> Lo has tenido por ${diffYears} años. Se recomienda cambiarlo después de 10 años para mantener tu seguridad digital.`;
+                    resultDiv.className = "result success";
+                }
+            });
+            
+            // Funciones de descarga
+            document.getElementById('downloadPhilosophy').addEventListener('click', function(e) {
+                e.preventDefault();
+                downloadMessage(philosophyMessage, 'reflexion_de_vida.txt');
+            });
+            
+            document.getElementById('downloadAwareness').addEventListener('click', function(e) {
+                e.preventDefault();
+                downloadMessage(awarenessMessage, 'concientizacion_programacion.txt');
+            });
+            
+            // Funciones de compartir
+            document.getElementById('sharePhilosophyWhatsApp').addEventListener('click', function(e) {
+                e.preventDefault();
+                shareMessage(philosophyMessage, 'whatsapp');
+            });
+            
+            document.getElementById('sharePhilosophyFacebook').addEventListener('click', function(e) {
+                e.preventDefault();
+                shareMessage(philosophyMessage, 'facebook');
+            });
+            
+            document.getElementById('shareAwarenessWhatsApp').addEventListener('click', function(e) {
+                e.preventDefault();
+                shareMessage(awarenessMessage, 'whatsapp');
+            });
+            
+            document.getElementById('shareAwarenessFacebook').addEventListener('click', function(e) {
+                e.preventDefault();
+                shareMessage(awarenessMessage, 'facebook');
+            });
+            
+            // Función genérica para descargar mensajes
+            function downloadMessage(message, filename) {
+                const element = document.createElement('a');
+                const file = new Blob([message], {type: 'text/plain'});
+                element.href = URL.createObjectURL(file);
+                element.download = filename;
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+                
+                // Mostrar mensaje de confirmación
+                alert('¡Mensaje descargado correctamente!');
+            }
+            
+            // Función genérica para compartir mensajes
+            function shareMessage(message, platform) {
+                const text = encodeURIComponent(message);
+                const url = encodeURIComponent(window.location.href);
+                
+                if (platform === 'whatsapp') {
+                    window.open(`https://wa.me/?text=${text}`, '_blank');
+                } else if (platform === 'facebook') {
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+                }
+            }
+            
+            // Scroll to top functionality
+            scrollToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Show/hide scroll to top button based on scroll position
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollToTopBtn.style.display = 'flex';
+                } else {
+                    scrollToTopBtn.style.display = 'none';
+                }
+            });
+        });
+
+
+
+    </script>
+</body>
+</html>

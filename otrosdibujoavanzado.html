@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtPro - Editor Profesional con 80 Efectos Especializados</title>
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --accent: #ff4d6d;
+            --anime: #ff6ec7;
+            --advanced: #4deeea;
+            --cubism: #ff9a76;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+               border-radius: 10px;
+  max-width:1100px;
+  margin: 90px auto;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .counters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .counter {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .app-container {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+        }
+        
+        .panel-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .upload-area {
+            border: 3px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .upload-area:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary);
+        }
+        
+        .upload-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 8px 0;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .preview-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            min-height: 550px;
+        }
+        
+        canvas {
+            max-width: 100%;
+            max-height: 480px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .image-info {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+            width: 100%;
+        }
+        
+        .control-group {
+            margin-bottom: 25px;
+        }
+        
+        .control-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .slider-container {
+            margin-bottom: 18px;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .effects-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            max-height: 650px;
+            overflow-y: auto;
+            padding: 5px 10px 5px 5px;
+        }
+        
+        .effect-category {
+            margin-bottom: 20px;
+        }
+        
+        .category-title {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .anime-title {
+            background: rgba(255, 110, 199, 0.2);
+            color: var(--anime);
+            border-left: 4px solid var(--anime);
+        }
+        
+        .advanced-title {
+            background: rgba(77, 238, 234, 0.2);
+            color: var(--advanced);
+            border-left: 4px solid var(--advanced);
+        }
+        
+        .cubism-title {
+            background: rgba(255, 154, 118, 0.2);
+            color: var(--cubism);
+            border-left: 4px solid var(--cubism);
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .filter-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 14px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .filter-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .filter-item.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .gallery-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+        }
+        
+        .gallery-title {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            text-align: center;
+            color: var(--primary);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+        }
+        
+        .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            height: 160px;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: var(--success);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.4s;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        @media (max-width: 1100px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Solo estilos para el botón "Volver atrás" */
+.back-button {
+  display: inline-block;
+  padding: 10px 18px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid #333;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  user-select: none;
+}
+
+/* Efecto al pasar el ratón */
+.back-button:hover,
+.back-button:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+  text-decoration: none;
+  outline: none;
+}
+
+/* Efecto al hacer clic */
+.back-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-palette"></i> Arte sube tu foto converti a dibujo profesional</h1>
+            <p class="subtitle">Cada efecto transforma tu imagen de manera única y diferente</p>
+            <a href="artesprincipal.html" class="back-button" aria-label="Volver atrás">Volver atrás</a>
+            <div class="counters">
+                <div class="counter"><i class="fas fa-paint-brush"></i> 20 Efectos Anime</div>
+                <div class="counter"><i class="fas fa-magic"></i> 40 Efectos Avanzados</div>
+                <div class="counter"><i class="fas fa-shapes"></i> 20 Efectos Cubistas</div>
+            </div>
+        </header>
+
+        <div class="app-container">
+            <div class="panel">
+                <h2 class="panel-title"><i class="fas fa-upload"></i> Subir Foto</h2>
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <p>Arrastra y suelta tu imagen aquí</p>
+                    <p>o</p>
+                    <button class="btn" id="selectImageBtn"><i class="fas fa-folder-open"></i> Seleccionar Archivo</button>
+                    <input type="file" id="fileInput" class="file-input" accept="image/*">
+                </div>
+                
+                <div class="control-group">
+                    <div class="control-title"><i class="fas fa-bolt"></i> Acciones Rápidas</div>
+                    <button class="btn" id="applyEffectBtn"><i class="fas fa-wand-magic-sparkles"></i> Aplicar Efecto</button>
+                    <button class="btn btn-secondary" id="resetBtn"><i class="fas fa-undo"></i> Restablecer Original</button>
+                    <button class="btn" id="downloadBtn"><i class="fas fa-download"></i> Descargar Dibujo</button>
+                </div>
+                
+                <div class="control-group">
+                    <div class="control-title"><i class="fas fa-sliders-h"></i> Ajustes</div>
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>Intensidad</span>
+                            <span id="intensityValue">5</span>
+                        </div>
+                        <input type="range" min="1" max="10" value="5" class="slider" id="intensitySlider">
+                    </div>
+                    
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>Detalle</span>
+                            <span id="detailValue">7</span>
+                        </div>
+                        <input type="range" min="1" max="10" value="7" class="slider" id="detailSlider">
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2 class="panel-title"><i class="fas fa-eye"></i> Vista Previa</h2>
+                <div class="preview-container">
+                    <canvas id="previewCanvas"></canvas>
+                    <div class="image-info" id="imageInfo">
+                        <i class="fas fa-info-circle"></i> No se ha cargado ninguna imagen
+                    </div>
+                </div>
+                
+                <div class="effects-container">
+                    <!-- Efectos Anime -->
+                    <div class="effect-category">
+                        <div class="category-title anime-title">
+                            <i class="fas fa-star"></i> 20 Efectos Anime
+                        </div>
+                        <div class="filters-grid">
+                            <div class="filter-item anime-item active" data-filter="anime-classic">Anime Clásico</div>
+                            <div class="filter-item anime-item" data-filter="anime-shonen">Estilo Shonen</div>
+                            <div class="filter-item anime-item" data-filter="anime-shojo">Estilo Shojo</div>
+                            <div class="filter-item anime-item" data-filter="anime-moe">Estilo Moe</div>
+                            <div class="filter-item anime-item" data-filter="anime-chibi">Chibi Kawaii</div>
+                            <div class="filter-item anime-item" data-filter="anime-mecha">Estilo Mecha</div>
+                            <div class="filter-item anime-item" data-filter="anime-retro">Anime Retro 90s</div>
+                            <div class="filter-item anime-item" data-filter="anime-ghibli">Estilo Ghibli</div>
+                            <div class="filter-item anime-item" data-filter="anime-sailormoon">Sailor Moon</div>
+                            <div class="filter-item anime-item" data-filter="anime-dbz">Dragon Ball Z</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Efectos Avanzados -->
+                    <div class="effect-category">
+                        <div class="category-title advanced-title">
+                            <i class="fas fa-cogs"></i> 40 Efectos Avanzados
+                        </div>
+                        <div class="filters-grid">
+                            <div class="filter-item advanced-item" data-filter="advanced-hdr">HDR Extremo</div>
+                            <div class="filter-item advanced-item" data-filter="advanced-neural">Estilo Neural</div>
+                            <div class="filter-item advanced-item" data-filter="advanced-cyber">Cyberpunk 2077</div>
+                            <div class="filter-item advanced-item" data-filter="advanced-biomech">Biomecánico</div>
+                            <div class="filter-item advanced-item" data-filter="advanced-fractal">Fractal Art</div>
+                            <div class="filter-item advanced-item" data-filter="advanced-kinetic">Arte Cinético</div>
+                            <div class="filter-item advanced-item" data-filter="advanced-hologram">Holograma 3D</div>
+                            <div class="filter-item advanced-item" data-filter="advanced-cyborg">Cyborg Realista</div>
+                            <div class="filter-item advanced-item" data-filter="advanced-neonoir">Neo-Noir</div>
+                            <div class="filter-item advanced-item" data-filter="advanced-psychedelic">Psicodélico</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Efectos Cubistas -->
+                    <div class="effect-category">
+                        <div class="category-title cubism-title">
+                            <i class="fas fa-shapes"></i> 20 Efectos Cubistas
+                        </div>
+                        <div class="filters-grid">
+                            <div class="filter-item cubism-item" data-filter="cubism-picasso">Picasso Clásico</div>
+                            <div class="filter-item cubism-item" data-filter="cubism-braque">Braque</div>
+                            <div class="filter-item cubism-item" data-filter="cubism-analytic">Cubismo Analítico</div>
+                            <div class="filter-item cubism-item" data-filter="cubism-synthetic">Cubismo Sintético</div>
+                            <div class="filter-item cubism-item" data-filter="cubism-faceted">Facetado Avanzado</div>
+                            <div class="filter-item cubism-item" data-filter="cubism-geometric">Geometría Pura</div>
+                            <div class="filter-item cubism-item" data-filter="cubism-abstract">Abstracto Cubista</div>
+                            <div class="filter-item cubism-item" data-filter="cubism-modern">Cubismo Moderno</div>
+                            <div class="filter-item cubism-item" data-filter="cubism-digital">Cubismo Digital</div>
+                            <div class="filter-item cubism-item" data-filter="cubism-fragmented">Fragmentación</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gallery-section">
+            <h2 class="gallery-title"><i class="fas fa-images"></i> Galería de Efectos</h2>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Los elementos de la galería se generarán dinámicamente -->
+                <div class="gallery-item">+</div>
+            </div>
+        </div>
+
+        <footer>
+            <p>ArtPro - Editor Profesional de Dibujo Artístico &copy; 2023</p>
+        </footer>
+    </div>
+
+    <!-- Notificación -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Efecto aplicado correctamente</span>
+    </div>
+
+    <script>
+        // Elementos del DOM
+        const fileInput = document.getElementById('fileInput');
+        const selectImageBtn = document.getElementById('selectImageBtn');
+        const uploadArea = document.getElementById('uploadArea');
+        const previewCanvas = document.getElementById('previewCanvas');
+        const ctx = previewCanvas.getContext('2d');
+        const applyEffectBtn = document.getElementById('applyEffectBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const imageInfo = document.getElementById('imageInfo');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        
+        // Sliders
+        const intensitySlider = document.getElementById('intensitySlider');
+        const detailSlider = document.getElementById('detailSlider');
+        
+        // Valores de los sliders
+        const intensityValue = document.getElementById('intensityValue');
+        const detailValue = document.getElementById('detailValue');
+        
+        // Variables de estado
+        let originalImage = null;
+        let currentImage = null;
+        let currentFilter = 'anime-classic';
+        
+        // Event Listeners
+        selectImageBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleImageUpload);
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.background = 'rgba(255, 255, 255, 0.1)';
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.background = '';
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.background = '';
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleImageUpload();
+            }
+        });
+        
+        applyEffectBtn.addEventListener('click', applyDrawingEffect);
+        resetBtn.addEventListener('click', resetImage);
+        downloadBtn.addEventListener('click', downloadImage);
+        
+        // Sliders
+        intensitySlider.addEventListener('input', () => {
+            intensityValue.textContent = intensitySlider.value;
+            if (currentImage) applyDrawingEffect();
+        });
+        
+        detailSlider.addEventListener('input', () => {
+            detailValue.textContent = detailSlider.value;
+            if (currentImage) applyDrawingEffect();
+        });
+        
+        // Filtros de estilo
+        document.querySelectorAll('.filter-item').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-item').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.getAttribute('data-filter');
+                if (currentImage) applyDrawingEffect();
+            });
+        });
+        
+        // Funciones
+        function handleImageUpload() {
+            if (!fileInput.files.length) return;
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    // Ajustar el tamaño del canvas a la imagen
+                    const maxWidth = 800;
+                    const maxHeight = 600;
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    if (width > maxWidth) {
+                        height = (maxWidth / width) * height;
+                        width = maxWidth;
+                    }
+                    
+                    if (height > maxHeight) {
+                        width = (maxHeight / height) * width;
+                        height = maxHeight;
+                    }
+                    
+                    previewCanvas.width = width;
+                    previewCanvas.height = height;
+                    
+                    // Guardar la imagen original
+                    originalImage = img;
+                    currentImage = img;
+                    
+                    // Dibujar la imagen en el canvas
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Actualizar información de la imagen
+                    imageInfo.textContent = `Tamaño: ${width} × ${height} píxeles | Filtro: ${getFilterName(currentFilter)}`;
+                    
+                    // Aplicar efecto de dibujo inicial
+                    applyDrawingEffect();
+                    
+                    showNotification('Imagen cargada correctamente');
+                };
+                img.src = e.target.result;
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        function applyDrawingEffect() {
+            if (!currentImage) return;
+            
+            // Limpiar el canvas
+            ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+            
+            // Dibujar la imagen original
+            ctx.drawImage(currentImage, 0, 0, previewCanvas.width, previewCanvas.height);
+            
+            // Obtener los datos de la imagen
+            const imageData = ctx.getImageData(0, 0, previewCanvas.width, previewCanvas.height);
+            const data = imageData.data;
+            
+            // Aplicar el filtro seleccionado con implementación única
+            applyUniqueEffect(data, currentFilter);
+            
+            // Volver a dibujar la imagen con el efecto aplicado
+            ctx.putImageData(imageData, 0, 0);
+            
+            // Actualizar información
+            imageInfo.textContent = `Tamaño: ${previewCanvas.width} × ${previewCanvas.height} píxeles | Filtro: ${getFilterName(currentFilter)}`;
+            
+            showNotification(`Efecto "${getFilterName(currentFilter)}" aplicado`);
+        }
+        
+        function applyUniqueEffect(data, filter) {
+            const intensity = parseInt(intensitySlider.value);
+            const detail = parseInt(detailSlider.value);
+            const width = previewCanvas.width;
+            const height = previewCanvas.height;
+            
+            // Efectos Anime - Cada uno con implementación única
+            if (filter.startsWith('anime-')) {
+                switch(filter) {
+                    case 'anime-classic':
+                        // Anime clásico - colores vibrantes, bordes definidos
+                        applyAnimeClassic(data, intensity, detail);
+                        break;
+                    case 'anime-shonen':
+                        // Estilo Shonen - alto contraste, efectos de energía
+                        applyShonenStyle(data, intensity, detail);
+                        break;
+                    case 'anime-shojo':
+                        // Estilo Shojo - colores pastel, efectos suaves
+                        applyShojoStyle(data, intensity, detail);
+                        break;
+                    case 'anime-moe':
+                        // Estilo Moe - colores brillantes, ojos grandes
+                        applyMoeStyle(data, intensity, detail);
+                        break;
+                    case 'anime-chibi':
+                        // Chibi Kawaii - proporciones exageradas, colores dulces
+                        applyChibiStyle(data, intensity, detail);
+                        break;
+                    case 'anime-mecha':
+                        // Estilo Mecha - detalles metálicos, líneas técnicas
+                        applyMechaStyle(data, intensity, detail);
+                        break;
+                    case 'anime-retro':
+                        // Anime Retro 90s - granulado, paleta limitada
+                        applyRetroStyle(data, intensity, detail);
+                        break;
+                    case 'anime-ghibli':
+                        // Estilo Ghibli - acuarela, colores naturales
+                        applyGhibliStyle(data, intensity, detail);
+                        break;
+                    case 'anime-sailormoon':
+                        // Sailor Moon - colores mágicos, efectos celestiales
+                        applySailorMoonStyle(data, intensity, detail);
+                        break;
+                    case 'anime-dbz':
+                        // Dragon Ball Z - efectos de energía, aura
+                        applyDBZStyle(data, intensity, detail);
+                        break;
+                }
+            }
+            // Efectos Avanzados - Implementaciones únicas
+            else if (filter.startsWith('advanced-')) {
+                switch(filter) {
+                    case 'advanced-hdr':
+                        // HDR Extremo - alto rango dinámico
+                        applyHDREffect(data, intensity, detail);
+                        break;
+                    case 'advanced-neural':
+                        // Estilo Neural - efecto de red neuronal
+                        applyNeuralStyle(data, intensity, detail);
+                        break;
+                    case 'advanced-cyber':
+                        // Cyberpunk 2077 - neón, distopía
+                        applyCyberpunkStyle(data, intensity, detail);
+                        break;
+                    case 'advanced-biomech':
+                        // Biomecánico - orgánico y mecánico
+                        applyBiomechStyle(data, intensity, detail);
+                        break;
+                    case 'advanced-fractal':
+                        // Fractal Art - patrones matemáticos
+                        applyFractalArt(data, intensity, detail);
+                        break;
+                    case 'advanced-kinetic':
+                        // Arte Cinético - movimiento y energía
+                        applyKineticArt(data, intensity, detail);
+                        break;
+                    case 'advanced-hologram':
+                        // Holograma 3D - efecto tridimensional
+                        applyHologramEffect(data, intensity, detail);
+                        break;
+                    case 'advanced-cyborg':
+                        // Cyborg Realista - humano y máquina
+                        applyCyborgStyle(data, intensity, detail);
+                        break;
+                    case 'advanced-neonoir':
+                        // Neo-Noir - contraste dramático
+                        applyNeoNoirStyle(data, intensity, detail);
+                        break;
+                    case 'advanced-psychedelic':
+                        // Psicodélico - colores vibrantes, patrones
+                        applyPsychedelicStyle(data, intensity, detail);
+                        break;
+                }
+            }
+            // Efectos Cubistas - Implementaciones únicas
+            else if (filter.startsWith('cubism-')) {
+                switch(filter) {
+                    case 'cubism-picasso':
+                        // Picasso Clásico - formas geométricas
+                        applyPicassoStyle(data, intensity, detail, width, height);
+                        break;
+                    case 'cubism-braque':
+                        // Braque - tonos tierra, texturas
+                        applyBraqueStyle(data, intensity, detail, width, height);
+                        break;
+                    case 'cubism-analytic':
+                        // Cubismo Analítico - descomposición
+                        applyAnalyticCubism(data, intensity, detail, width, height);
+                        break;
+                    case 'cubism-synthetic':
+                        // Cubismo Sintético - reconstrucción
+                        applySyntheticCubism(data, intensity, detail, width, height);
+                        break;
+                    case 'cubism-faceted':
+                        // Facetado Avanzado - múltiples caras
+                        applyFacetedStyle(data, intensity, detail, width, height);
+                        break;
+                    case 'cubism-geometric':
+                        // Geometría Pura - formas perfectas
+                        applyGeometricStyle(data, intensity, detail, width, height);
+                        break;
+                    case 'cubism-abstract':
+                        // Abstracto Cubista - no representacional
+                        applyAbstractCubism(data, intensity, detail, width, height);
+                        break;
+                    case 'cubism-modern':
+                        // Cubismo Moderno - interpretación contemporánea
+                        applyModernCubism(data, intensity, detail, width, height);
+                        break;
+                    case 'cubism-digital':
+                        // Cubismo Digital - píxeles y algoritmos
+                        applyDigitalCubism(data, intensity, detail, width, height);
+                        break;
+                    case 'cubism-fragmented':
+                        // Fragmentación - romper y reorganizar
+                        applyFragmentationStyle(data, intensity, detail, width, height);
+                        break;
+                }
+            }
+        }
+        
+        // Implementaciones únicas para efectos Anime
+        function applyAnimeClassic(data, intensity, detail) {
+            for (let i = 0; i < data.length; i += 4) {
+                // Colores vibrantes
+                const r = data[i], g = data[i+1], b = data[i+2];
+                const avg = (r + g + b) / 3;
+                const factor = 1.2 + (intensity / 20);
+                
+                data[i] = Math.min(255, (r - avg) * factor + avg);
+                data[i+1] = Math.min(255, (g - avg) * factor + avg);
+                data[i+2] = Math.min(255, (b - avg) * factor + avg);
+            }
+            applyCelShading(data, intensity);
+        }
+        
+        function applyShonenStyle(data, intensity, detail) {
+            // Alto contraste, efectos de energía
+            for (let i = 0; i < data.length; i += 4) {
+                const avg = (data[i] + data[i+1] + data[i+2]) / 3;
+                const threshold = 150 - (intensity * 5);
+                const newVal = avg > threshold ? 255 : 50;
+                
+                data[i] = newVal;
+                data[i+1] = newVal;
+                data[i+2] = newVal;
+            }
+            
+            // Añadir efectos de "energía"
+            for (let i = 0; i < data.length; i += 4) {
+                if (Math.random() > 0.95) {
+                    data[i] = 255; // R
+                    data[i+1] = 200; // G
+                    data[i+2] = 0; // B
+                }
+            }
+        }
+        
+        function applyShojoStyle(data, intensity, detail) {
+            // Colores pastel, efectos suaves
+            for (let i = 0; i < data.length; i += 4) {
+                data[i] = Math.min(255, data[i] + 40); // Más rojo
+                data[i+1] = Math.min(255, data[i+1] + 30); // Más verde
+                data[i+2] = Math.min(255, data[i+2] + 50); // Más azul
+                
+                // Suavizar contraste
+                const avg = (data[i] + data[i+1] + data[i+2]) / 3;
+                const blend = 0.7;
+                data[i] = data[i] * blend + avg * (1 - blend);
+                data[i+1] = data[i+1] * blend + avg * (1 - blend);
+                data[i+2] = data[i+2] * blend + avg * (1 - blend);
+            }
+        }
+        
+        function applyMoeStyle(data, intensity, detail) {
+            // Colores brillantes, ojos grandes (simulado)
+            for (let i = 0; i < data.length; i += 4) {
+                // Aumentar saturación
+                const r = data[i], g = data[i+1], b = data[i+2];
+                const max = Math.max(r, g, b);
+                if (max === r) data[i] = Math.min(255, r * 1.3);
+                else if (max === g) data[i+1] = Math.min(255, g * 1.3);
+                else data[i+2] = Math.min(255, b * 1.3);
+                
+                // Aclarar general
+                data[i] = Math.min(255, data[i] + 20);
+                data[i+1] = Math.min(255, data[i+1] + 20);
+                data[i+2] = Math.min(255, data[i+2] + 20);
+            }
+        }
+        
+        function applyChibiStyle(data, intensity, detail) {
+            // Proporciones exageradas (simulado con desenfoque selectivo)
+            const width = previewCanvas.width;
+            const height = previewCanvas.height;
+            
+            // Crear efecto de cabeza grande (área central más grande)
+            const centerX = width / 2;
+            const centerY = height / 2;
+            
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const i = (y * width + x) * 4;
+                    const dist = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+                    const maxDist = Math.min(width, height) / 3;
+                    
+                    if (dist < maxDist) {
+                        // Área central - colores más brillantes
+                        data[i] = Math.min(255, data[i] + 30);
+                        data[i+1] = Math.min(255, data[i+1] + 30);
+                        data[i+2] = Math.min(255, data[i+2] + 30);
+                    } else {
+                        // Área periférica - colores más suaves
+                        const blend = 0.8;
+                        const avg = (data[i] + data[i+1] + data[i+2]) / 3;
+                        data[i] = data[i] * blend + avg * (1 - blend);
+                        data[i+1] = data[i+1] * blend + avg * (1 - blend);
+                        data[i+2] = data[i+2] * blend + avg * (1 - blend);
+                    }
+                }
+            }
+        }
+        
+        function applyMechaStyle(data, intensity, detail) {
+            // Detalles metálicos, líneas técnicas
+            for (let i = 0; i < data.length; i += 4) {
+                const avg = (data[i] + data[i+1] + data[i+2]) / 3;
+                
+                // Efecto metálico - alto contraste con tonos azulados/grises
+                if (avg > 180) {
+                    data[i] = 220; // R
+                    data[i+1] = 230; // G
+                    data[i+2] = 240; // B
+                } else if (avg > 100) {
+                    data[i] = 100; // R
+                    data[i+1] = 120; // G
+                    data[i+2] = 140; // B
+                } else {
+                    data[i] = 30; // R
+                    data[i+1] = 40; // G
+                    data[i+2] = 50; // B
+                }
+            }
+            
+            // Añadir líneas técnicas (simuladas)
+            for (let i = 0; i < data.length; i += 4) {
+                const x = (i / 4) % previewCanvas.width;
+                if (x % 20 === 0) {
+                    data[i] = 255;
+                    data[i+1] = 255;
+                    data[i+2] = 255;
+                }
+            }
+        }
+        
+        function applyRetroStyle(data, intensity, detail) {
+            // Granulado, paleta limitada
+            for (let i = 0; i < data.length; i += 4) {
+                // Reducir paleta de colores
+                data[i] = Math.floor(data[i] / 64) * 64;
+                data[i+1] = Math.floor(data[i+1] / 64) * 64;
+                data[i+2] = Math.floor(data[i+2] / 64) * 64;
+                
+                // Añadir granulado
+                const grain = (Math.random() - 0.5) * 30;
+                data[i] = Math.max(0, Math.min(255, data[i] + grain));
+                data[i+1] = Math.max(0, Math.min(255, data[i+1] + grain));
+                data[i+2] = Math.max(0, Math.min(255, data[i+2] + grain));
+            }
+        }
+        
+        function applyGhibliStyle(data, intensity, detail) {
+            // Acuarela, colores naturales
+            for (let i = 0; i < data.length; i += 4) {
+                // Suavizar colores
+                const r = data[i], g = data[i+1], b = data[i+2];
+                const avg = (r + g + b) / 3;
+                const factor = 0.8;
+                
+                data[i] = Math.min(255, avg * factor + r * (1 - factor));
+                data[i+1] = Math.min(255, avg * factor + g * (1 - factor));
+                data[i+2] = Math.min(255, avg * factor + b * (1 - factor));
+                
+                // Aumentar ligeramente el azul y verde (naturaleza)
+                data[i+1] = Math.min(255, data[i+1] * 1.1);
+                data[i+2] = Math.min(255, data[i+2] * 1.05);
+            }
+        }
+        
+        function applySailorMoonStyle(data, intensity, detail) {
+            // Colores mágicos, efectos celestiales
+            for (let i = 0; i < data.length; i += 4) {
+                // Cambiar tonos hacia púrpuras y rosas
+                const r = data[i], g = data[i+1], b = data[i+2];
+                
+                data[i] = Math.min(255, r * 1.2); // Más rojo
+                data[i+1] = Math.min(255, g * 0.9); // Menos verde
+                data[i+2] = Math.min(255, b * 1.3); // Más azul
+                
+                // Añadir efecto "brillo mágico" aleatorio
+                if (Math.random() > 0.98) {
+                    data[i] = 255;
+                    data[i+1] = 200;
+                    data[i+2] = 255;
+                }
+            }
+        }
+        
+        function applyDBZStyle(data, intensity, detail) {
+            // Efectos de energía, aura
+            for (let i = 0; i < data.length; i += 4) {
+                const x = (i / 4) % previewCanvas.width;
+                const y = Math.floor((i / 4) / previewCanvas.width);
+                
+                // Crear efecto de aura en los bordes
+                const distFromCenter = Math.sqrt(
+                    Math.pow(x - previewCanvas.width/2, 2) + 
+                    Math.pow(y - previewCanvas.height/2, 2)
+                );
+                
+                if (distFromCenter > Math.min(previewCanvas.width, previewCanvas.height) / 2.5) {
+                    // Efecto de aura dorada en los bordes
+                    data[i] = Math.min(255, data[i] + 100); // R
+                    data[i+1] = Math.min(255, data[i+1] + 80); // G
+                    data[i+2] = Math.max(0, data[i+2] - 50); // B
+                }
+            }
+            
+            // Añadir partículas de energía
+            for (let i = 0; i < data.length; i += 4) {
+                if (Math.random() > 0.995) {
+                    data[i] = 255; // R
+                    data[i+1] = 215; // G
+                    data[i+2] = 0; // B
+                }
+            }
+        }
+        
+        function applyCelShading(data, intensity) {
+            // Detectar bordes para efecto cel-shading
+            for (let i = 0; i < data.length; i += 4) {
+                const x = (i / 4) % previewCanvas.width;
+                const y = Math.floor((i / 4) / previewCanvas.width);
+                
+                if (x > 0 && y > 0 && x < previewCanvas.width - 1 && y < previewCanvas.height - 1) {
+                    const current = (data[i] + data[i+1] + data[i+2]) / 3;
+                    const right = (data[i+4] + data[i+5] + data[i+6]) / 3;
+                    const bottom = (data[i+previewCanvas.width*4] + data[i+previewCanvas.width*4+1] + data[i+previewCanvas.width*4+2]) / 3;
+                    
+                    const edge = Math.abs(current - right) + Math.abs(current - bottom);
+                    
+                    if (edge > 50 - intensity * 3) {
+                        data[i] = 0;
+                        data[i+1] = 0;
+                        data[i+2] = 0;
+                    }
+                }
+            }
+        }
+        
+        // Implementaciones únicas para efectos Avanzados
+        function applyHDREffect(data, intensity, detail) {
+            // Alto rango dinámico - realzar luces y sombras
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i], g = data[i+1], b = data[i+2];
+                const luminance = 0.299*r + 0.587*g + 0.114*b;
+                
+                if (luminance > 200) {
+                    // Realzar áreas brillantes
+                    data[i] = Math.min(255, r * 1.2);
+                    data[i+1] = Math.min(255, g * 1.2);
+                    data[i+2] = Math.min(255, b * 1.2);
+                } else if (luminance < 50) {
+                    // Detallar áreas oscuras
+                    data[i] = Math.min(255, r * 1.5);
+                    data[i+1] = Math.min(255, g * 1.5);
+                    data[i+2] = Math.min(255, b * 1.5);
+                }
+            }
+        }
+        
+        function applyNeuralStyle(data, intensity, detail) {
+            // Efecto de red neuronal - patrones abstractos
+            for (let i = 0; i < data.length; i += 4) {
+                const x = (i / 4) % previewCanvas.width;
+                const y = Math.floor((i / 4) / previewCanvas.width);
+                
+                // Crear patrones basados en funciones trigonométricas
+                const pattern = Math.sin(x * 0.1) * Math.cos(y * 0.1) * 127 + 128;
+                
+                // Mezclar con imagen original
+                const blend = 0.3 + (intensity / 20);
+                data[i] = data[i] * (1 - blend) + pattern * blend;
+                data[i+1] = data[i+1] * (1 - blend) + (255 - pattern) * blend;
+                data[i+2] = data[i+2] * (1 - blend) + Math.abs(pattern - 128) * 2 * blend;
+            }
+        }
+        
+        function applyCyberpunkStyle(data, intensity, detail) {
+            // Cyberpunk - neón, distopía
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i], g = data[i+1], b = data[i+2];
+                
+                // Cambiar tonos hacia azules y rosas neón
+                data[i] = Math.min(255, b * 0.7 + r * 0.3 + 50);
+                data[i+1] = Math.min(255, g * 0.5 + 30);
+                data[i+2] = Math.min(255, r * 0.3 + b * 0.7 + 70);
+                
+                // Añadir efecto de neón aleatorio
+                if (Math.random() > 0.99) {
+                    data[i] = 0;
+                    data[i+1] = 255;
+                    data[i+2] = 255;
+                }
+            }
+        }
+        
+        function applyBiomechStyle(data, intensity, detail) {
+            // Biomecánico - orgánico y mecánico
+            for (let i = 0; i < data.length; i += 4) {
+                const x = (i / 4) % previewCanvas.width;
+                
+                // Crear patrones de "circuitos"
+                if (x % 15 === 0) {
+                    data[i] = 150; // R
+                    data[i+1] = 150; // G
+                    data[i+2] = 200; // B
+                }
+                
+                // Efecto de textura orgánica
+                const noise = (Math.random() - 0.5) * 20;
+                data[i] = Math.max(0, Math.min(255, data[i] + noise));
+                data[i+1] = Math.max(0, Math.min(255, data[i+1] + noise));
+                data[i+2] = Math.max(0, Math.min(255, data[i+2] + noise));
+            }
+        }
+        
+        function applyFractalArt(data, intensity, detail) {
+            // Fractal Art - patrones matemáticos
+            const width = previewCanvas.width;
+            const height = previewCanvas.height;
+            
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const i = (y * width + x) * 4;
+                    
+                    // Generar patrón fractal simple
+                    let zx = 3 * (x - width/2) / (0.5 * width);
+                    let zy = 2 * (y - height/2) / (0.5 * height);
+                    const cX = -0.7;
+                    const cY = 0.27015;
+                    let iter = 0;
+                    let maxIter = 100;
+                    
+                    while (zx * zx + zy * zy < 4 && iter < maxIter) {
+                        const tmp = zx * zx - zy * zy + cX;
+                        zy = 2.0 * zx * zy + cY;
+                        zx = tmp;
+                        iter++;
+                    }
+                    
+                    // Colorear basado en iteraciones
+                    if (iter < maxIter) {
+                        const color = iter * 10;
+                        data[i] = (color * 5) % 255; // R
+                        data[i+1] = (color * 7) % 255; // G
+                        data[i+2] = (color * 11) % 255; // B
+                    }
+                }
+            }
+        }
+        
+        function applyKineticArt(data, intensity, detail) {
+            // Arte Cinético - movimiento y energía
+            for (let i = 0; i < data.length; i += 4) {
+                const x = (i / 4) % previewCanvas.width;
+                const y = Math.floor((i / 4) / previewCanvas.width);
+                
+                // Crear efecto de movimiento radial
+                const centerX = previewCanvas.width / 2;
+                const centerY = previewCanvas.height / 2;
+                const dist = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+                const angle = Math.atan2(y - centerY, x - centerX);
+                
+                // Desplazar píxeles basado en ángulo y distancia
+                const shift = Math.sin(dist * 0.1 + Date.now() * 0.001) * 5;
+                const newX = Math.floor(x + Math.cos(angle) * shift);
+                const newY = Math.floor(y + Math.sin(angle) * shift);
+                
+                if (newX >= 0 && newX < previewCanvas.width && newY >= 0 && newY < previewCanvas.height) {
+                    const newI = (newY * previewCanvas.width + newX) * 4;
+                    data[i] = data[newI];
+                    data[i+1] = data[newI+1];
+                    data[i+2] = data[newI+2];
+                }
+            }
+        }
+        
+        function applyHologramEffect(data, intensity, detail) {
+            // Holograma 3D - efecto tridimensional
+            for (let i = 0; i < data.length; i += 4) {
+                const x = (i / 4) % previewCanvas.width;
+                
+                // Crear efecto de franjas de interferencia
+                const stripe = Math.sin(x * 0.05) * 50 + 50;
+                
+                // Añadir tono azul característico de hologramas
+                data[i] = Math.min(255, data[i] * 0.7 + stripe * 0.3); // R
+                data[i+1] = Math.min(255, data[i+1] * 0.8 + stripe * 0.2); // G
+                data[i+2] = Math.min(255, data[i+2] * 0.6 + stripe * 0.4 + 50); // B
+                
+                // Efecto de transparencia
+                if (i % 16 === 0) {
+                    data[i+3] = 150; // Alpha
+                }
+            }
+        }
+        
+        function applyCyborgStyle(data, intensity, detail) {
+            // Cyborg - humano y máquina
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i], g = data[i+1], b = data[i+2];
+                const avg = (r + g + b) / 3;
+                
+                // Áreas "mecánicas" en tonos metálicos
+                if (avg > 180) {
+                    data[i] = 200; // R
+                    data[i+1] = 200; // G
+                    data[i+2] = 210; // B
+                }
+                // Áreas "orgánicas" en tonos cálidos
+                else if (avg > 100) {
+                    data[i] = Math.min(255, r * 1.2);
+                    data[i+1] = Math.min(255, g * 1.1);
+                    data[i+2] = Math.max(0, b * 0.9);
+                }
+            }
+        }
+        
+        function applyNeoNoirStyle(data, intensity, detail) {
+            // Neo-Noir - contraste dramático, tonos oscuros
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i], g = data[i+1], b = data[i+2];
+                const avg = (r + g + b) / 3;
+                
+                // Alto contraste en escala de grises
+                const newVal = avg > 128 ? 220 : 30;
+                data[i] = newVal;
+                data[i+1] = newVal;
+                data[i+2] = newVal;
+                
+                // Preservar algunos tonos azules para efecto nocturno
+                if (b > r && b > g) {
+                    data[i+2] = Math.min(255, newVal + 30);
+                }
+            }
+        }
+        
+        function applyPsychedelicStyle(data, intensity, detail) {
+            // Psicodélico - colores vibrantes, patrones
+            for (let i = 0; i < data.length; i += 4) {
+                const x = (i / 4) % previewCanvas.width;
+                const y = Math.floor((i / 4) / previewCanvas.width);
+                
+                // Cambiar colores basado en posición
+                data[i] = (x + y) % 255; // R
+                data[i+1] = (x * 2) % 255; // G
+                data[i+2] = (y * 2) % 255; // B
+                
+                // Mezclar con imagen original
+                const blend = 0.5 + (intensity / 20);
+                const origR = data[i], origG = data[i+1], origB = data[i+2];
+                data[i] = origR * (1 - blend) + data[i] * blend;
+                data[i+1] = origG * (1 - blend) + data[i+1] * blend;
+                data[i+2] = origB * (1 - blend) + data[i+2] * blend;
+            }
+        }
+        
+        // Implementaciones únicas para efectos Cubistas
+        function applyPicassoStyle(data, intensity, detail, width, height) {
+            // Picasso - formas geométricas angulares
+            const blockSize = 20 - detail;
+            
+            for (let y = 0; y < height; y += blockSize) {
+                for (let x = 0; x < width; x += blockSize) {
+                    // Obtener color promedio del bloque
+                    let r = 0, g = 0, b = 0, count = 0;
+                    
+                    for (let dy = 0; dy < blockSize && y + dy < height; dy++) {
+                        for (let dx = 0; dx < blockSize && x + dx < width; dx++) {
+                            const i = ((y + dy) * width + (x + dx)) * 4;
+                            r += data[i];
+                            g += data[i+1];
+                            b += data[i+2];
+                            count++;
+                        }
+                    }
+                    
+                    r = Math.floor(r / count);
+                    g = Math.floor(g / count);
+                    b = Math.floor(b / count);
+                    
+                    // Dibujar formas geométricas irregulares
+                    for (let dy = 0; dy < blockSize && y + dy < height; dy++) {
+                        for (let dx = 0; dx < blockSize && x + dx < width; dx++) {
+                            // Crear patrones angulares
+                            if ((dx + dy) % 3 === 0 || (dx - dy) % 4 === 0) {
+                                const i = ((y + dy) * width + (x + dx)) * 4;
+                                data[i] = r;
+                                data[i+1] = g;
+                                data[i+2] = b;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        function applyBraqueStyle(data, intensity, detail, width, height) {
+            // Braque - tonos tierra, texturas
+            for (let i = 0; i < data.length; i += 4) {
+                // Cambiar a paleta de tonos tierra
+                const r = data[i], g = data[i+1], b = data[i+2];
+                data[i] = Math.min(255, r * 0.8 + 30); // Marrón rojizo
+                data[i+1] = Math.min(255, g * 0.7 + 20); // Marrón verdoso
+                data[i+2] = Math.min(255, b * 0.6 + 10); // Marrón azulado
+                
+                // Añadir efecto de textura
+                const texture = (Math.random() - 0.5) * 15;
+                data[i] = Math.max(0, Math.min(255, data[i] + texture));
+                data[i+1] = Math.max(0, Math.min(255, data[i+1] + texture));
+                data[i+2] = Math.max(0, Math.min(255, data[i+2] + texture));
+            }
+        }
+        
+        function applyAnalyticCubism(data, intensity, detail, width, height) {
+            // Cubismo Analítico - descomposición en planos
+            const planes = 5 + detail;
+            
+            for (let p = 0; p < planes; p++) {
+                const angle = (p * Math.PI) / planes;
+                const shift = Math.sin(angle) * 10;
+                
+                for (let y = 0; y < height; y++) {
+                    for (let x = 0; x < width; x++) {
+                        const newX = Math.floor(x + shift);
+                        if (newX >= 0 && newX < width) {
+                            const i = (y * width + x) * 4;
+                            const newI = (y * width + newX) * 4;
+                            
+                            // Mezclar planos superpuestos
+                            const blend = 0.3;
+                            data[i] = data[i] * (1 - blend) + data[newI] * blend;
+                            data[i+1] = data[i+1] * (1 - blend) + data[newI+1] * blend;
+                            data[i+2] = data[i+2] * (1 - blend) + data[newI+2] * blend;
+                        }
+                    }
+                }
+            }
+        }
+        
+        function applySyntheticCubism(data, intensity, detail, width, height) {
+            // Cubismo Sintético - reconstrucción con elementos
+            const blockSize = 15 - detail;
+            
+            for (let y = 0; y < height; y += blockSize) {
+                for (let x = 0; x < width; x += blockSize) {
+                    // Obtener color promedio
+                    let r = 0, g = 0, b = 0, count = 0;
+                    
+                    for (let dy = 0; dy < blockSize && y + dy < height; dy++) {
+                        for (let dx = 0; dx < blockSize && x + dx < width; dx++) {
+                            const i = ((y + dy) * width + (x + dx)) * 4;
+                            r += data[i];
+                            g += data[i+1];
+                            b += data[i+2];
+                            count++;
+                        }
+                    }
+                    
+                    r = Math.floor(r / count);
+                    g = Math.floor(g / count);
+                    b = Math.floor(b / count);
+                    
+                    // Dibujar formas sintéticas (cuadrados, triángulos)
+                    for (let dy = 0; dy < blockSize && y + dy < height; dy++) {
+                        for (let dx = 0; dx < blockSize && x + dx < width; dx++) {
+                            if ((dx < blockSize/2 && dy < blockSize/2) || 
+                                (dx >= blockSize/2 && dy >= blockSize/2)) {
+                                const i = ((y + dy) * width + (x + dx)) * 4;
+                                data[i] = r;
+                                data[i+1] = g;
+                                data[i+2] = b;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        function applyFacetedStyle(data, intensity, detail, width, height) {
+            // Facetado Avanzado - múltiples caras
+            const facets = 8 + detail * 2;
+            
+            for (let i = 0; i < data.length; i += 4) {
+                const x = (i / 4) % width;
+                const y = Math.floor((i / 4) / width);
+                
+                // Determinar a qué faceta pertenece el píxel
+                const facetX = Math.floor(x / (width / facets));
+                const facetY = Math.floor(y / (height / facets));
+                const facet = (facetX + facetY) % facets;
+                
+                // Cambiar color basado en la faceta
+                const hue = (facet * 360) / facets;
+                data[i] = (data[i] + hue) % 255;
+                data[i+1] = (data[i+1] + hue / 2) % 255;
+                data[i+2] = (data[i+2] + hue / 3) % 255;
+            }
+        }
+        
+        function applyGeometricStyle(data, intensity, detail, width, height) {
+            // Geometría Pura - formas perfectas
+            for (let i = 0; i < data.length; i += 4) {
+                const x = (i / 4) % width;
+                const y = Math.floor((i / 4) / width);
+                
+                // Crear patrones geométricos
+                const pattern1 = (x % 20 < 10) ? 255 : 0;
+                const pattern2 = (y % 20 < 10) ? 255 : 0;
+                
+                // Mezclar con imagen original
+                const blend = 0.4 + (intensity / 25);
+                data[i] = data[i] * (1 - blend) + pattern1 * blend;
+                data[i+1] = data[i+1] * (1 - blend) + pattern2 * blend;
+                data[i+2] = data[i+2] * (1 - blend) + (pattern1 + pattern2) / 2 * blend;
+            }
+        }
+        
+        function applyAbstractCubism(data, intensity, detail, width, height) {
+            // Abstracto Cubista - no representacional
+            for (let i = 0; i < data.length; i += 4) {
+                const x = (i / 4) % width;
+                const y = Math.floor((i / 4) / width);
+                
+                // Crear composición abstracta basada en posición
+                data[i] = (x * y) % 255; // R
+                data[i+1] = (x * 2 + y) % 255; // G
+                data[i+2] = (x + y * 2) % 255; // B
+                
+                // Preservar algo de la imagen original
+                const blend = 0.7 - (intensity / 20);
+                const origR = data[i], origG = data[i+1], origB = data[i+2];
+                data[i] = origR * blend + data[i] * (1 - blend);
+                data[i+1] = origG * blend + data[i+1] * (1 - blend);
+                data[i+2] = origB * blend + data[i+2] * (1 - blend);
+            }
+        }
+        
+        function applyModernCubism(data, intensity, detail, width, height) {
+            // Cubismo Moderno - interpretación contemporánea
+            const blockSize = 25 - detail;
+            
+            for (let y = 0; y < height; y += blockSize) {
+                for (let x = 0; x < width; x += blockSize) {
+                    // Desplazar bloques para crear dinamismo
+                    const shiftX = Math.sin(y * 0.1) * 5;
+                    const shiftY = Math.cos(x * 0.1) * 5;
+                    
+                    const newX = Math.floor(x + shiftX);
+                    const newY = Math.floor(y + shiftY);
+                    
+                    if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+                        // Copiar bloque desplazado
+                        for (let dy = 0; dy < blockSize && y + dy < height; dy++) {
+                            for (let dx = 0; dx < blockSize && x + dx < width; dx++) {
+                                const i = ((y + dy) * width + (x + dx)) * 4;
+                                const newI = ((newY + dy) * width + (newX + dx)) * 4;
+                                
+                                if (newI < data.length) {
+                                    data[i] = data[newI];
+                                    data[i+1] = data[newI+1];
+                                    data[i+2] = data[newI+2];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        function applyDigitalCubism(data, intensity, detail, width, height) {
+            // Cubismo Digital - píxeles y algoritmos
+            const pixelSize = 10 - detail;
+            
+            for (let y = 0; y < height; y += pixelSize) {
+                for (let x = 0; x < width; x += pixelSize) {
+                    // Obtener color promedio
+                    let r = 0, g = 0, b = 0, count = 0;
+                    
+                    for (let dy = 0; dy < pixelSize && y + dy < height; dy++) {
+                        for (let dx = 0; dx < pixelSize && x + dx < width; dx++) {
+                            const i = ((y + dy) * width + (x + dx)) * 4;
+                            r += data[i];
+                            g += data[i+1];
+                            b += data[i+2];
+                            count++;
+                        }
+                    }
+                    
+                    r = Math.floor(r / count);
+                    g = Math.floor(g / count);
+                    b = Math.floor(b / count);
+                    
+                    // Dibujar píxeles grandes con bordes
+                    for (let dy = 0; dy < pixelSize && y + dy < height; dy++) {
+                        for (let dx = 0; dx < pixelSize && x + dx < width; dx++) {
+                            const i = ((y + dy) * width + (x + dx)) * 4;
+                            
+                            // Borde negro alrededor de los "píxeles"
+                            if (dx === 0 || dy === 0 || dx === pixelSize-1 || dy === pixelSize-1) {
+                                data[i] = 0;
+                                data[i+1] = 0;
+                                data[i+2] = 0;
+                            } else {
+                                data[i] = r;
+                                data[i+1] = g;
+                                data[i+2] = b;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        function applyFragmentationStyle(data, intensity, detail, width, height) {
+            // Fragmentación - romper y reorganizar
+            const fragments = 10 + detail * 2;
+            
+            // Crear fragmentos
+            for (let f = 0; f < fragments; f++) {
+                const fragX = Math.floor(Math.random() * (width - 50));
+                const fragY = Math.floor(Math.random() * (height - 50));
+                const fragWidth = 30 + Math.floor(Math.random() * 40);
+                const fragHeight = 30 + Math.floor(Math.random() * 40);
+                
+                // Rotar fragmento
+                const angle = Math.random() * Math.PI / 4 - Math.PI / 8;
+                
+                for (let y = fragY; y < fragY + fragHeight && y < height; y++) {
+                    for (let x = fragX; x < fragX + fragWidth && x < width; x++) {
+                        // Calcular posición rotada
+                        const relX = x - fragX - fragWidth/2;
+                        const relY = y - fragY - fragHeight/2;
+                        const rotX = Math.floor(relX * Math.cos(angle) - relY * Math.sin(angle) + fragWidth/2);
+                        const rotY = Math.floor(relX * Math.sin(angle) + relY * Math.cos(angle) + fragHeight/2);
+                        
+                        const newX = fragX + rotX;
+                        const newY = fragY + rotY;
+                        
+                        if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+                            const i = (y * width + x) * 4;
+                            const newI = (newY * width + newX) * 4;
+                            
+                            if (newI < data.length) {
+                                data[i] = data[newI];
+                                data[i+1] = data[newI+1];
+                                data[i+2] = data[newI+2];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        function getFilterName(filter) {
+            const filterNames = {
+                'anime-classic': 'Anime Clásico',
+                'anime-shonen': 'Estilo Shonen',
+                'anime-shojo': 'Estilo Shojo',
+                'anime-moe': 'Estilo Moe',
+                'anime-chibi': 'Chibi Kawaii',
+                'anime-mecha': 'Estilo Mecha',
+                'anime-retro': 'Anime Retro 90s',
+                'anime-ghibli': 'Estilo Ghibli',
+                'anime-sailormoon': 'Sailor Moon',
+                'anime-dbz': 'Dragon Ball Z',
+                
+                'advanced-hdr': 'HDR Extremo',
+                'advanced-neural': 'Estilo Neural',
+                'advanced-cyber': 'Cyberpunk 2077',
+                'advanced-biomech': 'Biomecánico',
+                'advanced-fractal': 'Fractal Art',
+                'advanced-kinetic': 'Arte Cinético',
+                'advanced-hologram': 'Holograma 3D',
+                'advanced-cyborg': 'Cyborg Realista',
+                'advanced-neonoir': 'Neo-Noir',
+                'advanced-psychedelic': 'Psicodélico',
+                
+                'cubism-picasso': 'Picasso Clásico',
+                'cubism-braque': 'Braque',
+                'cubism-analytic': 'Cubismo Analítico',
+                'cubism-synthetic': 'Cubismo Sintético',
+                'cubism-faceted': 'Facetado Avanzado',
+                'cubism-geometric': 'Geometría Pura',
+                'cubism-abstract': 'Abstracto Cubista',
+                'cubism-modern': 'Cubismo Moderno',
+                'cubism-digital': 'Cubismo Digital',
+                'cubism-fragmented': 'Fragmentación'
+            };
+            
+            return filterNames[filter] || filter;
+        }
+        
+        function resetImage() {
+            if (!originalImage) return;
+            
+            // Restablecer sliders
+            intensitySlider.value = 5;
+            detailSlider.value = 7;
+            
+            intensityValue.textContent = '5';
+            detailValue.textContent = '7';
+            
+            // Restablecer filtros
+            document.querySelectorAll('.filter-item').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('.filter-item[data-filter="anime-classic"]').classList.add('active');
+            currentFilter = 'anime-classic';
+            
+            // Dibujar la imagen original
+            ctx.drawImage(originalImage, 0, 0, previewCanvas.width, previewCanvas.height);
+            currentImage = originalImage;
+            
+            imageInfo.textContent = `Tamaño: ${previewCanvas.width} × ${previewCanvas.height} píxeles | Filtro: ${getFilterName(currentFilter)}`;
+            showNotification('Imagen restablecida');
+        }
+        
+        function downloadImage() {
+            if (!currentImage) return;
+            
+            // Crear un enlace de descarga
+            const link = document.createElement('a');
+            link.download = `artpro-${getFilterName(currentFilter).toLowerCase().replace(/\s+/g, '-')}.png`;
+            link.href = previewCanvas.toDataURL('image/png');
+            link.click();
+            
+            showNotification('Imagen descargada');
+        }
+        
+        function showNotification(message) {
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Inicializar la galería
+        function initializeGallery() {
+            const galleryGrid = document.getElementById('galleryGrid');
+            galleryGrid.innerHTML = '';
+            
+            // Agregar elementos de ejemplo a la galería
+            const galleryItems = [
+                'Anime Clásico', 'Estilo Shonen', 'Chibi Kawaii', 
+                'Cyberpunk 2077', 'HDR Extremo', 'Picasso Clásico',
+                'Geometría Pura', 'Fragmentación'
+            ];
+            
+            galleryItems.forEach(item => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.textContent = item;
+                galleryItem.addEventListener('click', () => {
+                    showNotification(`Ejemplo: ${item} - Carga una imagen para aplicar este efecto`);
+                });
+                galleryGrid.appendChild(galleryItem);
+            });
+        }
+        
+        // Inicializar la aplicación
+        initializeGallery();
+    </script>
+</body>
+</html>
